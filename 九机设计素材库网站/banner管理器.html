@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 九机 Banner 管理工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f5f3f0;
+            --surface: #ffffff;
+            --surface-alt: #faf9f7;
+            --text: #2c2416;
+            --text-secondary: #6b5e4a;
+            --text-muted: #9b8d7a;
+            --border: #e5ded4;
+            --border-light: #f0ebe3;
+            --primary: #3a3a3a;
+            --accent-ai: #f48120;
+            --accent-psd: #2c6fb5;
+            --danger: #d94a4a;
+            --danger-bg: #fef5f5;
+            --success: #3d8b40;
+            --success-bg: #f2faf3;
+            --warning: #f39c12;
+            --warning-bg: #fef9e7;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow: 0 2px 8px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 自定义标题栏 */
+        .titlebar {
+            height: 40px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            -webkit-app-region: drag;
+            user-select: none;
+        }
+        .titlebar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            -webkit-app-region: no-drag;
+        }
+        .titlebar-icon {
+            width: 24px; height: 24px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--accent-ai), var(--accent-psd));
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 0.75rem;
+        }
+        .titlebar-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .titlebar-btns {
+            display: flex;
+            -webkit-app-region: no-drag;
+        }
+        .titlebar-btn {
+            width: 46px; height: 40px;
+            border: none; background: transparent;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .titlebar-btn:hover { background: var(--surface-alt); }
+        .titlebar-btn.close:hover { background: #e81123; color: #fff; }
+
+        .main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 统计卡片 */
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+        }
+        .stat-icon {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+        }
+        .stat-icon.orange { background: var(--accent-ai-bg); color: var(--accent-ai); }
+        .stat-icon.blue { background: var(--accent-psd-bg); color: var(--accent-psd); }
+        .stat-icon.green { background: var(--success-bg); color: var(--success); }
+        .stat-info h3 { font-size: 1.6rem; font-weight: 700; }
+        .stat-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Banner 列表 */
+        .banner-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .banner-card:hover { box-shadow: var(--shadow); }
+        .banner-card-inner {
+            display: flex;
+            align-items: stretch;
+        }
+        .banner-thumb {
+            width: 240px;
+            flex-shrink: 0;
+            position: relative;
+            background: var(--surface-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .banner-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .banner-thumb-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            color: #fff;
+            font-size: 1.5rem;
+            gap: 16px;
+        }
+        .banner-thumb:hover .banner-thumb-overlay { opacity: 1; }
+        .banner-thumb-overlay span {
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .banner-size-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        .banner-index {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: var(--accent-psd);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 10px;
+        }
+        .banner-body {
+            flex: 1;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .banner-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .banner-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .banner-meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .banner-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--surface-alt);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .banner-meta-item i { font-size: 0.75rem; }
+        .banner-meta-item .dim { font-weight: 600; color: var(--text-secondary); }
+        .banner-meta-item .size { font-weight: 600; color: var(--accent-ai); }
+        .banner-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+            border-left: 1px solid var(--border-light);
+            min-width: 90px;
+        }
+        .banner-action-btn {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .banner-action-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--surface-alt); }
+        .banner-action-btn.danger { border-color: var(--danger); color: var(--danger); }
+        .banner-action-btn.danger:hover { background: var(--danger-bg); }
+        .banner-action-btn.move { padding: 8px; }
+        .banner-action-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* 添加区域 */
+        .add-section {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-top: 24px;
+            overflow: hidden;
+        }
+        .add-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .add-header h3 { font-size: 1.1rem; font-weight: 700; }
+        .add-header i { color: var(--accent-ai); }
+        .add-body { padding: 24px; }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--accent-ai);
+            background: var(--accent-ai-bg);
+        }
+        .upload-zone input { display: none; }
+        .upload-zone i { font-size: 3rem; color: var(--text-muted); margin-bottom: 16px; display: block; }
+        .upload-zone h4 { font-size: 1.05rem; margin-bottom: 8px; }
+        .upload-zone p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .upload-preview {
+            display: none;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface-alt);
+        }
+        .upload-preview.show { display: block; }
+        .upload-preview-img {
+            position: relative;
+            max-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8e4dd;
+            overflow: hidden;
+        }
+        .upload-preview-img img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            display: block;
+        }
+        .upload-preview-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.75);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .upload-preview-badge.warn { background: var(--danger); }
+        .upload-preview-badge.ok { background: var(--success); }
+        .upload-preview-form {
+            padding: 20px;
+            background: var(--surface);
+        }
+        .upload-preview-form .form-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .upload-preview-form .form-group { flex: 1; margin-bottom: 0; }
+        .upload-preview-form .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .upload-preview-form .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .upload-preview-form .form-group input:focus { border-color: var(--accent-ai); }
+        .upload-preview-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; border: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: #1a1a1a; }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: var(--surface-alt); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #c03939; }
+
+        /* 编辑弹窗 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            max-width: 500px; width: 90%;
+            max-height: 90vh; overflow-y: auto;
+            transform: scale(0.9);
+            transition: var(--transition-bounce);
+            box-shadow: var(--shadow-lg);
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal h2 { font-size: 1.3rem; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        .modal h2 i { color: var(--accent-psd); }
+        .modal .form-group { margin-bottom: 16px; }
+        .modal .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+        .modal .form-group input, .modal .form-group textarea {
+            width: 100%; padding: 10px 14px;
+            border: 2px solid var(--border); border-radius: var(--radius-sm);
+            font-size: 0.95rem; font-family: inherit; outline: none;
+            box-sizing: border-box;
+        }
+        .modal .form-group textarea { min-height: 80px; resize: vertical; }
+        .modal .form-group input:focus, .modal .form-group textarea:focus { border-color: var(--accent-ai); }
+        .modal .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+        .modal .form-actions .btn { flex: 1; justify-content: center; }
+        .modal-close {
+            position: absolute; top: 16px; right: 16px;
+            width: 36px; height: 36px;
+            border-radius: 50%; border: none;
+            background: var(--surface-alt); cursor: pointer;
+            font-size: 1rem; color: var(--text-secondary);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: var(--border); }
+
+        /* 全屏预览 */
+        .preview-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000; opacity: 0; visibility: hidden;
+            transition: var(--transition);
+        }
+        .preview-overlay.active { opacity: 1; visibility: visible; }
+        .preview-overlay img {
+            max-width: 95%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .preview-overlay .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            width: 44px; height: 44px;
+            border-radius: 50%; border: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff; font-size: 1.2rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .preview-overlay .close-btn:hover { background: rgba(255,255,255,0.3); }
+        .preview-overlay .preview-info {
+            position: absolute; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff; padding: 10px 24px;
+            border-radius: 50px; font-size: 0.85rem;
+            display: flex; gap: 16px; align-items: center;
+        }
+        .preview-overlay .preview-info span { display: flex; align-items: center; gap: 6px; }
+        .preview-overlay .preview-info .dim { color: #4fc3f7; font-weight: 700; }
+        .preview-overlay .preview-info .size { color: var(--accent-ai); font-weight: 700; }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; }
+        .toast {
+            background: var(--primary); color: #fff;
+            padding: 14px 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            display: flex; align-items: center; gap: 10px;
+            margin-top: 10px;
+            transform: translateX(120%);
+            transition: var(--transition-bounce);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+
+        .empty-state {
+            text-align: center; padding: 80px 24px; color: var(--text-muted);
+        }
+        .empty-state i { font-size: 4rem; margin-bottom: 20px; opacity: 0.4; }
+        .empty-state h3 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .empty-state p { font-size: 0.9rem; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <!-- 自定义标题栏 -->
+    <div class="titlebar">
+        <div class="titlebar-left">
+            <div class="titlebar-icon"><i class="fas fa-images"></i></div>
+            <span class="titlebar-title">九机 Banner 管理工具</span>
+        </div>
+        <div class="titlebar-btns">
+            <button class="titlebar-btn" onclick="minimize()"><i class="fas fa-minus"></i></button>
+            <button class="titlebar-btn" onclick="maximize()"><i class="far fa-square"></i></button>
+            <button class="titlebar-btn close" onclick="closeWindow()"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <div class="main">
+        <!-- 统计 -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-images"></i></div>
+                <div class="stat-info">
+                    <h3 id="statCount">0</h3>
+                    <p>Banner 数量</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-arrows-alt-h"></i></div>
+                <div class="stat-info">
+                    <h3 id="statWidth">--</h3>
+                    <p>推荐宽度(px)</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="statStatus">就绪</h3>
+                    <p>当前状态</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner 列表 -->
+        <div id="bannerList"></div>
+
+        <!-- 添加区域 -->
+        <div class="add-section">
+            <div class="add-header">
+                <i class="fas fa-plus-circle"></i>
+                <h3>添加新 Banner</h3>
+            </div>
+            <div class="add-body">
+                <div class="upload-zone" id="uploadZone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h4>点击或拖拽上传图片</h4>
+                    <p>支持 PNG、JPG、WEBP，建议尺寸 1200×400</p>
+                    <input type="file" id="imgInput" accept="image/*">
+                </div>
+
+                <div class="upload-preview" id="uploadPreview">
+                    <div class="upload-preview-img">
+                        <img id="previewImg" src="" alt="">
+                        <span class="upload-preview-badge" id="previewBadge">--</span>
+                    </div>
+                    <div class="upload-preview-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Banner 标题 *</label>
+                                <input type="text" id="titleInput" placeholder="例如：618 大促来袭">
+                            </div>
+                            <div class="form-group">
+                                <label>副标题</label>
+                                <input type="text" id="subtitleInput" placeholder="例如：精选素材限时下载">
+                            </div>
+                        </div>
+                        <div class="upload-preview-actions">
+                            <button class="btn btn-outline" onclick="cancelUpload()">取消</button>
+                            <button class="btn btn-primary" onclick="saveBanner()">
+                                <i class="fas fa-check"></i> 保存 Banner
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-edit"></i> 编辑 Banner</h2>
+            <div class="form-group">
+                <label>Banner 标题</label>
+                <input type="text" id="editTitle">
+            </div>
+            <div class="form-group">
+                <label>副标题</label>
+                <input type="text" id="editSubtitle">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmEdit()"><i class="fas fa-check"></i> 保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全屏预览 -->
+    <div class="preview-overlay" id="previewOverlay" onclick="closePreview()">
+        <button class="close-btn" onclick="closePreview()"><i class="fas fa-times"></i></button>
+        <img id="previewFullImg" src="" alt="">
+        <div class="preview-info">
+            <span><i class="fas fa-arrows-alt-h"></i> <span class="dim" id="previewDim">--</span></span>
+            <span><i class="fas fa-file"></i> <span class="size" id="previewSize">--</span></span>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Firebase Firestore & Storage
+        const bannersRef = db.collection('banners');
+        let banners = [];
+        let pendingFile = null;
+        let pendingInfo = null;
+        let editingId = null;
+
+        async function loadBanners() {
+            const snapshot = await bannersRef.orderBy('order').get();
+            banners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        function readAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        function formatSize(bytes) {
+            if (!bytes) return '--';
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+        }
+
+        function getImgInfo(dataUrl) {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => resolve({ width: img.width, height: img.height });
+                img.onerror = () => resolve({ width: 0, height: 0 });
+                img.src = dataUrl;
+            });
+        }
+
+        async function render() {
+            await loadBanners();
+            document.getElementById('statCount').textContent = banners.length;
+
+            const list = document.getElementById('bannerList');
+            if (banners.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <h3>暂无 Banner</h3>
+                        <p>上传图片添加第一个 Banner</p>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = banners.map((b, i) => `
+                <div class="banner-card">
+                    <div class="banner-card-inner">
+                        <div class="banner-thumb" onclick="showPreview('${b.id}')">
+                            <img src="${b.image}" alt="${b.title}">
+                            <span class="banner-index">第 ${i + 1} 张</span>
+                            <span class="banner-size-badge">${b.width || '?'} × ${b.height || '?'} px</span>
+                            <div class="banner-thumb-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>点击预览</span>
+                            </div>
+                        </div>
+                        <div class="banner-body">
+                            <div class="banner-title">${b.title}</div>
+                            <div class="banner-subtitle">${b.subtitle || '(无副标题)'}</div>
+                            <div class="banner-meta">
+                                <div class="banner-meta-item">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                    尺寸: <span class="dim">${b.width || '--'} × ${b.height || '--'} px</span>
+                                </div>
+                                <div class="banner-meta-item">
+                                    <i class="fas fa-file"></i>
+                                    大小: <span class="size">${formatSize(b.fileSize)}</span>
+                                </div>
+                                <div class="banner-meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    排序: ${i + 1}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="banner-actions">
+                            <button class="banner-action-btn move" onclick="moveFB('${b.id}', -1)" ${i === 0 ? 'disabled' : ''} title="上移">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                            <button class="banner-action-btn move" onclick="moveFB('${b.id}', 1)" ${i === banners.length - 1 ? 'disabled' : ''} title="下移">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                            <button class="banner-action-btn" onclick="openEditModal('${b.id}')" title="编辑">
+                                <i class="fas fa-edit"></i> 编辑
+                            </button>
+                            <button class="banner-action-btn danger" onclick="deleteFB('${b.id}')" title="删除">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 上传
+        const uploadZone = document.getElementById('uploadZone');
+        const imgInput = document.getElementById('imgInput');
+
+        uploadZone.addEventListener('click', () => imgInput.click());
+        uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', async e => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                await handleFile(file);
+            }
+        });
+        imgInput.addEventListener('change', async e => {
+            const file = e.target.files[0];
+            if (file) await handleFile(file);
+        });
+
+        async function handleFile(file) {
+            pendingFile = file;
+            const data = await readAsDataURL(file);
+            pendingInfo = await getImgInfo(data);
+            pendingInfo.fileSize = file.size;
+
+            document.getElementById('previewImg').src = data;
+            const badge = document.getElementById('previewBadge');
+            badge.textContent = `${pendingInfo.width} × ${pendingInfo.height} px`;
+            badge.className = 'upload-preview-badge ok';
+
+            const ok = pendingInfo.width >= 800 && pendingInfo.height >= 200;
+            if (!ok) {
+                badge.textContent = `${pendingInfo.width} × ${pendingInfo.height} px (尺寸偏小)`;
+                badge.className = 'upload-preview-badge warn';
+            }
+
+            uploadZone.style.display = 'none';
+            document.getElementById('uploadPreview').classList.add('show');
+            document.getElementById('titleInput').value = '';
+            document.getElementById('subtitleInput').value = '';
+            document.getElementById('titleInput').focus();
+        }
+
+        function cancelUpload() {
+            pendingFile = null;
+            pendingInfo = null;
+            imgInput.value = '';
+            document.getElementById('uploadPreview').classList.remove('show');
+            uploadZone.style.display = '';
+        }
+
+        async function saveBanner() {
+            const title = document.getElementById('titleInput').value.trim();
+            if (!pendingFile) { showToast('请先选择图片', 'error'); return; }
+            if (!title) { showToast('请输入标题', 'error'); return; }
+            const subtitle = document.getElementById('subtitleInput').value.trim();
+            try {
+                const bannerId = bannersRef.doc().id;
+                const ext = pendingFile.name.split('.').pop().toLowerCase();
+                const thumbRef = storage.ref(`banners/${bannerId}.${ext}`);
+                await thumbRef.put(pendingFile);
+                const imageUrl = await thumbRef.getDownloadURL();
+                await bannersRef.doc(bannerId).set({
+                    image: imageUrl, title, subtitle,
+                    width: pendingInfo.width,
+                    height: pendingInfo.height,
+                    fileSize: pendingInfo.fileSize,
+                    order: banners.length,
+                    createdAt: new Date().toISOString()
+                });
+                cancelUpload();
+                await render();
+                showToast('Banner 添加成功', 'success');
+            } catch (err) { showToast('添加失败: ' + err.message, 'error'); }
+        }
+
+        async function deleteFB(bannerId) {
+            if (!confirm('确定删除这个 Banner？')) return;
+            try {
+                const b = banners.find(x => x.id === bannerId);
+                if (b && b.image) { try { await storage.refFromURL(b.image).delete(); } catch (e) {} }
+                await bannersRef.doc(bannerId).delete();
+                await render();
+                showToast('已删除', 'success');
+            } catch (err) { showToast('删除失败', 'error'); }
+        }
+
+        async function moveFB(bannerId, dir) {
+            try {
+                const idx = banners.findIndex(b => b.id === bannerId);
+                if (idx === -1 || idx + dir < 0 || idx + dir >= banners.length) return;
+                await bannersRef.doc(banners[idx].id).update({ order: idx + dir });
+                await bannersRef.doc(banners[idx + dir].id).update({ order: idx });
+                await render();
+            } catch (err) {}
+        }
+
+        function openEditModal(bannerId) {
+            editingId = bannerId;
+            const b = banners.find(x => x.id === bannerId);
+            if (!b) return;
+            document.getElementById('editTitle').value = b.title;
+            document.getElementById('editSubtitle').value = b.subtitle || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            editingId = null;
+        }
+
+        async function confirmEdit() {
+            const title = document.getElementById('editTitle').value.trim();
+            if (!title) { showToast('标题不能为空', 'error'); return; }
+            const subtitle = document.getElementById('editSubtitle').value.trim();
+            try {
+                await bannersRef.doc(editingId).update({ title, subtitle });
+                closeEditModal();
+                await render();
+                showToast('修改已保存', 'success');
+            } catch (err) { showToast('保存失败', 'error'); }
+        }
+
+        function showPreview(bannerId) {
+            const b = banners.find(x => x.id === bannerId);
+            if (!b) return;
+            document.getElementById('previewFullImg').src = b.image;
+            document.getElementById('previewDim').textContent = `${b.width || '--'} × ${b.height || '--'} px`;
+            document.getElementById('previewSize').textContent = formatSize(b.fileSize);
+            document.getElementById('previewOverlay').classList.add('active');
+        }
+
+        function closePreview() {
+            document.getElementById('previewOverlay').classList.remove('active');
+        }
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i><span>${msg}</span>`;
+            container.appendChild(t);
+            setTimeout(() => t.classList.add('show'), 10);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        // 窗口控制
+        function minimize() {
+            if (window.electronAPI) {
+                window.electronAPI.minimize();
+            } else {
+                // Web fallback: 模拟最小化
+                document.body.style.display = 'none';
+                setTimeout(() => { document.body.style.display = ''; }, 500);
+            }
+        }
+        function maximize() {
+            if (window.electronAPI) {
+                window.electronAPI.maximize();
+            }
+        }
+        function closeWindow() {
+            if (window.electronAPI) {
+                window.electronAPI.close();
+            } else {
+                window.close();
+            }
+        }
+
+        // ESC 关闭弹窗
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closePreview();
+                closeEditModal();
+            }
+        });
+
+        render();
+    </script>
+</body>
+</html>
