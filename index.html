@@ -1920,12 +1920,12 @@
         // ========== 素材操作 (Firestore) ==========
 
         async function getMyAssets() {
-            const snapshot = await assetsRef.where('ownerId', '==', currentUser.uid).orderBy('date', 'desc').get();
+            const snapshot = await assetsRef.where('ownerId', '==', currentUser.uid).get();
             return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         }
 
         async function getPublicAssets() {
-            const snapshot = await assetsRef.where('isPublic', '==', true).orderBy('date', 'desc').get();
+            const snapshot = await assetsRef.where('isPublic', '==', true).get();
             return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         }
 
@@ -1982,9 +1982,9 @@
                 const assetId = assetsRef.doc().id;
                 const sourceType = getFileType(selectedSourceFile.name);
 
-                // 检查文件大小（Firestore 单文档限制 ~1MB）
-                if (selectedSourceFile.size > 900 * 1024) {
-                    showToast('源文件超过 900KB，请压缩后重试', 'error');
+                // 检查文件大小（Firestore 单文档限制 ~1MB, base64 会增大 33%）
+                if (selectedSourceFile.size > 600 * 1024) {
+                    showToast('源文件超过 600KB，请压缩后重试', 'error');
                     return;
                 }
 
