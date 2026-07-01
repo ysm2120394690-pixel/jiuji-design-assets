@@ -1,0 +1,3424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 九机设计素材库 - Design Assets Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f5f3f0;
+            --surface: #ffffff;
+            --surface-alt: #faf9f7;
+            --text: #2c2416;
+            --text-secondary: #6b5e4a;
+            --text-muted: #9b8d7a;
+            --border: #e5ded4;
+            --border-light: #f0ebe3;
+            --primary: #3a3a3a;
+            --accent-ai: #f48120;
+            --accent-ai-bg: #fff5eb;
+            --accent-psd: #2c6fb5;
+            --accent-psd-bg: #eef5fb;
+            --accent-eps: #7b4db5;
+            --accent-eps-bg: #f5f0fa;
+            --accent-png: #3d8b40;
+            --accent-png-bg: #f2faf3;
+            --accent-jpg: #e67e22;
+            --accent-jpg-bg: #fef5eb;
+            --accent-svg: #9b59b6;
+            --accent-svg-bg: #f8f0fa;
+            --accent-other: #5a8a6a;
+            --accent-other-bg: #f0f7f2;
+            --danger: #d94a4a;
+            --danger-bg: #fef5f5;
+            --success: #3d8b40;
+            --success-bg: #f2faf3;
+            --warning: #f39c12;
+            --warning-bg: #fef9e7;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, #f48120 0%, #e0731a 40%, #2c6fb5 60%, #1a5080 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .nav-tabs { display: flex; gap: 8px; }
+
+        .nav-tab {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .nav-tab:hover { color: var(--text); }
+        .nav-tab.active { background: var(--primary); color: #fff; }
+
+        .search-box {
+            flex: 1;
+            max-width: 320px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 42px;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            background: var(--surface-alt);
+            outline: none;
+        }
+
+        .search-box input:focus { border-color: #c4b8a8; background: var(--surface); }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar, .user-avatar-lg {
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-ai), var(--accent-psd));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            font-size: 0.9rem;
+        }
+
+        .user-avatar-lg {
+            width: 44px;
+            height: 44px;
+            font-size: 1rem;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            min-width: 180px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .user-dropdown.show { display: block; }
+
+        .user-dropdown-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-dropdown-item:hover { background: var(--surface-alt); }
+        .user-dropdown-item.danger { color: var(--danger); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: #1a1a1a; }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: var(--surface-alt); border-color: #c4b8a8; }
+        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-warning { background: var(--warning); color: #fff; }
+
+        /* 主内容区 */
+        .main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        /* 顶部素材分类导航 */
+        .top-category-nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .top-category-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+        }
+
+        .top-cat-btn {
+            padding: 14px 24px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .top-cat-btn:hover {
+            color: var(--text);
+        }
+
+        .top-cat-btn.active {
+            color: var(--accent-psd);
+        }
+
+        .top-cat-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--accent-psd);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .stats-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            min-width: 140px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.total { background: var(--accent-ai-bg); color: var(--accent-ai); }
+        .stat-icon.favorite { background: var(--warning-bg); color: var(--warning); }
+        .stat-icon.public { background: var(--accent-psd-bg); color: var(--accent-psd); }
+
+        .stat-info h3 { font-size: 1.5rem; font-weight: 700; }
+        .stat-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .filter-btn:hover { border-color: #c4b8a8; color: var(--text); }
+        .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+        /* 用户信息卡片 */
+        .user-profile-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .user-profile-bg {
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent-ai) 0%, var(--accent-psd) 100%);
+        }
+
+        .user-profile-content {
+            display: flex;
+            align-items: flex-start;
+            padding: 0 24px 24px;
+            position: relative;
+        }
+
+        .user-profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-ai), var(--accent-psd));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            position: absolute;
+            top: -40px;
+            border: 4px solid var(--surface);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-profile-avatar:hover .user-profile-edit {
+            opacity: 1;
+        }
+
+        .user-profile-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .user-profile-info {
+            flex: 1;
+            padding-top: 50px;
+            margin-left: 100px;
+        }
+
+        .user-profile-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .user-profile-bio {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .user-profile-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .user-stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-stat-num {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .user-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .user-profile-actions {
+            padding-top: 50px;
+        }
+
+        /* 轮播 Banner */
+        .banner-carousel {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            background: var(--surface-alt);
+        }
+
+        .banner-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-slide .banner-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .banner-slide .banner-overlay h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .banner-slide .banner-overlay p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .banner-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .banner-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .banner-dot.active {
+            background: #fff;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.4);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .banner-arrow:hover { background: rgba(0,0,0,0.6); }
+        .banner-arrow.prev { left: 12px; }
+        .banner-arrow.next { right: 12px; }
+
+        .banner-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-ai) 0%, var(--accent-psd) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            gap: 8px;
+        }
+
+        .banner-placeholder i { font-size: 2.5rem; }
+        .banner-placeholder p { font-size: 0.9rem; opacity: 0.8; }
+
+        /* 分类导航 */
+        .category-nav {
+            background: var(--surface);
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .category-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .category-btn:hover {
+            border-color: var(--accent-psd);
+            background: var(--accent-psd-bg);
+        }
+
+        .category-btn.active {
+            border-color: var(--accent-psd);
+            background: var(--accent-psd);
+            color: #fff;
+        }
+
+        .category-btn i { font-size: 1.2rem; }
+        .category-btn span { font-size: 0.95rem; font-weight: 600; }
+
+        .sort-select {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        .asset-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-bounce);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .asset-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+        .asset-preview {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: var(--surface-alt);
+            overflow: hidden;
+        }
+
+        .asset-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .asset-preview .file-icon { font-size: 4rem; }
+
+        .favorite-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-muted);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .favorite-btn:hover { color: var(--warning); transform: scale(1.1); }
+        .favorite-btn.active { color: var(--warning); }
+        .favorite-btn.active i { font-weight: 900; }
+
+        .asset-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .asset-badge.ai { background: var(--accent-ai); }
+        .asset-badge.psd { background: var(--accent-psd); }
+        .asset-badge.eps { background: var(--accent-eps); }
+
+        .asset-category-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: rgba(44, 111, 181, 0.9);
+            color: #fff;
+        }
+
+        .asset-owner-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: var(--surface);
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .asset-info { padding: 16px; }
+
+        .asset-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .asset-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); }
+
+        .asset-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .asset-actions .btn { flex: 1; justify-content: center; padding: 8px 12px; font-size: 0.8rem; }
+
+        .empty-state { text-align: center; padding: 80px 24px; color: var(--text-muted); }
+        .empty-state i { font-size: 4rem; margin-bottom: 20px; opacity: 0.5; }
+        .empty-state h3 { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .empty-state p { font-size: 0.9rem; margin-bottom: 24px; }
+
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: var(--transition-bounce);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+        .modal h2 { font-size: 1.4rem; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--surface-alt);
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-close:hover { background: var(--border); }
+
+        /* 登录页 */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4dd 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .login-logo .logo-icon { width: 56px; height: 56px; font-size: 1.5rem; }
+        .login-logo span { font-size: 1.8rem; font-weight: 700; color: var(--text); }
+
+        .login-tabs { display: flex; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
+
+        .login-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .login-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        .form-group { margin-bottom: 16px; min-width: 0; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            outline: none;
+            font-family: inherit;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        .form-group input:focus { border-color: #c4b8a8; }
+
+        .input-group { display: flex; gap: 10px; width: 100%; box-sizing: border-box; }
+        .input-group input { flex: 1; min-width: 0; }
+        .input-group .btn { padding: 12px 16px; white-space: nowrap; flex-shrink: 0; }
+        .input-group .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        input[type="tel"],
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            ime-mode: active;
+        }
+
+        .modal {
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+        .form-actions .btn { flex: 1; justify-content: center; }
+        .form-actions .btn-outline { flex: none; }
+
+        .forgot-password { text-align: center; margin-top: 16px; font-size: 0.85rem; }
+        .forgot-password a { color: var(--accent-psd); cursor: pointer; text-decoration: none; }
+        .forgot-password a:hover { text-decoration: underline; }
+
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+        .checkbox-group input { width: auto; }
+        .checkbox-group label { margin: 0; font-weight: normal; font-size: 0.85rem; }
+
+        /* 上传区域 */
+        .upload-section {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .upload-section:hover, .upload-section.dragover {
+            border-color: var(--accent-ai);
+            background: var(--accent-ai-bg);
+        }
+
+        .upload-section i { font-size: 2.5rem; color: var(--text-muted); margin-bottom: 12px; }
+        .upload-section h4 { font-size: 1rem; margin-bottom: 8px; }
+        .upload-section p { font-size: 0.8rem; color: var(--text-muted); }
+        .upload-section input[type="file"] { display: none; }
+
+        .upload-section.preview-section { border-color: var(--accent-png); }
+        .upload-section.preview-section:hover, .upload-section.preview-section.dragover {
+            border-color: var(--accent-png);
+            background: var(--accent-png-bg);
+        }
+
+        .file-list { margin-bottom: 20px; }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--surface-alt);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+        }
+
+        .file-item-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+        .file-item-info { flex: 1; }
+        .file-item-name { font-weight: 500; font-size: 0.9rem; }
+        .file-item-size { font-size: 0.75rem; color: var(--text-muted); }
+
+        .file-item-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .file-item-remove:hover { background: var(--danger-bg); color: var(--danger); }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: inherit;
+            min-height: 80px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .form-group textarea:focus { border-color: #c4b8a8; }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            background: var(--surface);
+        }
+
+        .form-group select:focus { border-color: #c4b8a8; }
+
+        /* 详情模态框 */
+        .detail-preview {
+            width: 100%;
+            height: 300px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: var(--surface-alt);
+            overflow: hidden;
+        }
+
+        .detail-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .detail-preview .file-icon { font-size: 6rem; color: var(--text-muted); }
+
+        .detail-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+
+        .detail-item { background: var(--surface-alt); padding: 12px; border-radius: var(--radius-sm); }
+        .detail-item label { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .detail-item span { font-size: 0.9rem; font-weight: 500; }
+
+        .detail-description { background: var(--surface-alt); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px; }
+        .detail-description label { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 8px; }
+        .detail-description p { font-size: 0.9rem; line-height: 1.6; }
+
+        /* 确认弹窗 */
+        .confirm-modal .modal { text-align: center; max-width: 400px; }
+        .confirm-modal .modal-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--danger-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+            color: var(--danger);
+        }
+
+        .confirm-modal h3 { margin-bottom: 12px; }
+        .confirm-modal p { color: var(--text-secondary); margin-bottom: 24px; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+
+        /* 用户资料编辑 */
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .avatar-upload:hover {
+            border-color: var(--accent-psd);
+            background: var(--accent-psd-bg);
+        }
+
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-ai), var(--accent-psd));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .avatar-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* 消息中心 */
+        .messages-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .message-item {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .message-item.empty {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            padding: 60px 20px;
+        }
+
+        .message-item.empty i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .message-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-psd-bg);
+            color: var(--accent-psd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-content { flex: 1; }
+        .message-title { font-weight: 600; margin-bottom: 4px; }
+        .message-desc { font-size: 0.85rem; color: var(--text-muted); }
+        .message-time { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* 积分商城 */
+        .points-balance { margin-bottom: 24px; }
+
+        .points-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--warning-bg) 0%, #fff9e6 100%);
+            border-radius: var(--radius);
+            border: 2px solid var(--warning);
+        }
+
+        .points-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--warning);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .points-info { flex: 1; }
+        .points-num { font-size: 1.8rem; font-weight: 700; color: var(--warning); }
+        .points-label { font-size: 0.85rem; color: var(--text-muted); }
+
+        .points-mall h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .points-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--surface-alt);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+        }
+
+        .points-item-name { font-weight: 600; display: block; margin-bottom: 4px; }
+        .points-item-desc { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 2000; }
+
+        .toast {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            transform: translateX(120%);
+            transition: var(--transition-bounce);
+        }
+
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            .header-inner { flex-wrap: wrap; height: auto; padding: 12px 0; gap: 12px; }
+            .search-box { order: 3; max-width: 100%; width: 100%; }
+            .nav-tabs { order: 2; width: 100%; justify-content: center; }
+            .assets-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+            .stats-bar { flex-direction: column; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .asset-card { animation: fadeIn 0.3s ease-out; }
+
+        /* 图片放大查看 */
+        .detail-preview {
+            position: relative;
+            cursor: zoom-in;
+        }
+
+        .detail-preview .zoom-hint {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .detail-preview:hover .zoom-hint { opacity: 1; }
+
+        /* Lightbox 放大弹窗 */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s;
+        }
+
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+
+        .lightbox-toolbar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .lightbox-btn {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border: none; border-radius: 8px;
+            cursor: pointer; color: #fff;
+            transition: all 0.15s;
+        }
+
+        .lightbox-btn:hover { background: rgba(255,255,255,0.2); }
+        .lightbox-btn.close { background: rgba(239,68,68,0.8); }
+        .lightbox-btn.close:hover { background: rgba(239,68,68,1); }
+
+        .lightbox-zoom-level {
+            min-width: 60px; text-align: center;
+            color: #fff; font-size: 14px; font-weight: 500;
+        }
+
+        .lightbox-separator {
+            width: 1px; height: 24px;
+            background: rgba(255,255,255,0.2); margin: 0 8px;
+        }
+
+        .lightbox-image-wrapper {
+            flex: 1;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            padding: 56px 16px 16px;
+            width: 100%;
+            cursor: grab;
+        }
+
+        .lightbox-image-wrapper.dragging { cursor: grabbing; }
+
+        .lightbox-image-wrapper img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain;
+            user-select: none;
+            transform-origin: center center;
+            transition: transform 0.2s ease;
+        }
+
+        .lightbox-hint {
+            position: absolute;
+            bottom: 16px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            color: #fff; padding: 8px 16px;
+            border-radius: 20px; font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录页 -->
+    <div class="login-page" id="loginPage">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
+                <span>九机设计素材库</span>
+            </div>
+
+            <div class="login-tabs">
+                <div class="login-tab active" data-type="account">账号登录</div>
+            </div>
+
+            <div id="accountLoginForm">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="loginUsername" placeholder="请输入邮箱">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码">
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">记住登录</label>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="accountLogin()">
+                    <i class="fas fa-sign-in-alt"></i> 登录
+                </button>
+                <div class="forgot-password">
+                    <span onclick="showForgotPassword()" style="color: var(--accent-psd); cursor: pointer;">忘记密码？</span>
+                </div>
+                <div style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.85rem;">
+                    还没有账号？<span onclick="switchToRegister()" style="color: var(--accent-psd); cursor: pointer;">立即注册</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册页 -->
+    <div id="registerPage" class="login-page hidden">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
+                <span>九机设计素材库</span>
+            </div>
+
+            <div id="registerForm">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="regUsername" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="regEmail" placeholder="请输入邮箱">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="regPassword" placeholder="请输入密码（至少6位）">
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%;" onclick="register()">
+                    <i class="fas fa-user-plus"></i> 注册
+                </button>
+
+                <div style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.85rem;">
+                    已有账号？<span onclick="switchToLogin()" style="color: var(--accent-psd); cursor: pointer;">立即登录</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用 -->
+    <div id="mainApp" class="hidden">
+        <header class="header">
+            <div class="header-inner">
+                <div class="logo" onclick="showAll()">
+                    <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
+                    <span>九机设计素材库</span>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索素材..." oninput="handleSearch(this.value)">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openUploadModal()">
+                        <i class="fas fa-cloud-upload-alt"></i> 上传
+                    </button>
+                    <div class="user-menu" id="userMenu">
+                        <div class="user-avatar-lg" id="userAvatarHeader">U</div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-dropdown-item" onclick="showSecuritySettings()">
+                                <i class="fas fa-cog"></i> 个人设置
+                            </div>
+                            <div class="user-dropdown-item" onclick="showBannerManager()">
+                                <i class="fas fa-images"></i> Banner 设置
+                            </div>
+                            <div class="user-dropdown-item" onclick="showMyAssets()">
+                                <i class="fas fa-folder"></i> 我的素材
+                            </div>
+                            <div class="user-dropdown-item" onclick="showFavorites()">
+                                <i class="fas fa-heart"></i> 我的收藏
+                            </div>
+                            <div class="user-dropdown-item" onclick="showPublicGallery()">
+                                <i class="fas fa-globe"></i> 素材广场
+                            </div>
+                            <div class="user-dropdown-item" onclick="showMessages()">
+                                <i class="fas fa-envelope"></i> 消息中心
+                            </div>
+                            <div class="user-dropdown-item danger" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> 退出登录
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 轮播 Banner -->
+        <div class="banner-carousel" id="bannerCarousel">
+            <div class="banner-placeholder">
+                <i class="fas fa-images"></i>
+                <p>点击右上角「设置」添加 Banner 图片</p>
+            </div>
+            <div class="banner-dots" id="bannerDots"></div>
+            <button class="banner-arrow prev" id="bannerPrev" style="display:none;"><i class="fas fa-chevron-left"></i></button>
+            <button class="banner-arrow next" id="bannerNext" style="display:none;"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <!-- 顶部素材分类导航 -->
+        <div class="top-category-nav">
+            <div class="top-category-inner">
+                <button class="top-cat-btn active" onclick="selectTopCategory('all', this)">
+                    <i class="fas fa-th-large"></i> 全部
+                </button>
+                <button class="top-cat-btn" onclick="selectTopCategory('single', this)">
+                    <i class="fas fa-file-image"></i> 单张设计
+                </button>
+                <button class="top-cat-btn" onclick="selectTopCategory('full', this)">
+                    <i class="fas fa-layer-group"></i> 大促整套
+                </button>
+                <button class="top-cat-btn" onclick="selectTopCategory('element', this)">
+                    <i class="fas fa-puzzle-piece"></i> 拆分元素
+                </button>
+            </div>
+        </div>
+
+        <main class="main">
+            <!-- 用户信息卡片 -->
+            <div class="user-profile-card" id="userProfileCard">
+                <div class="user-profile-bg"></div>
+                <div class="user-profile-content">
+                    <div class="user-profile-avatar" id="userAvatarLarge" onclick="showSecuritySettings()">
+                        <span id="userAvatarText">U</span>
+                        <div class="user-profile-edit"><i class="fas fa-camera"></i></div>
+                    </div>
+                    <div class="user-profile-info">
+                        <h2 class="user-profile-name" id="userProfileName">用户名</h2>
+                        <p class="user-profile-bio" id="userProfileBio">这个人很懒，什么都没写...</p>
+                        <div class="user-profile-stats">
+                            <div class="user-stat-item">
+                                <span class="user-stat-num" id="userAssetsCount">0</span>
+                                <span class="user-stat-label">素材</span>
+                            </div>
+                            <div class="user-stat-item">
+                                <span class="user-stat-num" id="userFavCount">0</span>
+                                <span class="user-stat-label">收藏</span>
+                            </div>
+                            <div class="user-stat-item">
+                                <span class="user-stat-num" id="userPoints">100</span>
+                                <span class="user-stat-label">积分</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-profile-actions">
+                        <button class="btn btn-outline" onclick="showSecuritySettings()">
+                            <i class="fas fa-edit"></i> 编辑资料
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 统计入口 -->
+            <div class="stats-bar">
+                <div class="stat-card" onclick="showMyAssets()">
+                    <div class="stat-icon total"><i class="fas fa-folder"></i></div>
+                    <div class="stat-info"><h3 id="totalCount">0</h3><p>我的素材</p></div>
+                </div>
+                <div class="stat-card" onclick="showFavorites()">
+                    <div class="stat-icon favorite"><i class="fas fa-heart"></i></div>
+                    <div class="stat-info"><h3 id="favoriteCount">0</h3><p>我的收藏</p></div>
+                </div>
+                <div class="stat-card" onclick="showPublicGallery()">
+                    <div class="stat-icon public"><i class="fas fa-globe"></i></div>
+                    <div class="stat-info"><h3 id="publicCount">0</h3><p>素材广场</p></div>
+                </div>
+            </div>
+
+            <div class="assets-grid" id="assetsGrid"></div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-folder-open"></i>
+                <h3>还没有素材</h3>
+                <p>点击上传按钮添加你的第一个设计素材</p>
+            </div>
+
+            <!-- 筛选排序栏 -->
+            <div class="filter-bar" style="margin-top:20px;">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="ai">AI</button>
+                <button class="filter-btn" data-filter="psd">PSD</button>
+                <button class="filter-btn" data-filter="eps">EPS</button>
+                <select class="sort-select" id="sortSelect">
+                    <option value="newest">最新上传</option>
+                    <option value="oldest">最早上传</option>
+                    <option value="name-asc">名称 A-Z</option>
+                    <option value="name-desc">名称 Z-A</option>
+                </select>
+                <select class="sort-select" id="monthSelect">
+                    <option value="all">全部时间</option>
+                </select>
+            </div>
+        </main>
+    </div>
+
+    <!-- 上传模态框 -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeUploadModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-cloud-upload-alt" style="color: var(--accent-ai);"></i> 上传素材（最大500MB）</h2>
+
+            <div class="upload-section preview-section" id="previewUploadZone">
+                <i class="fas fa-image"></i>
+                <h4>拖拽或点击选择预览图（PNG/JPG）</h4>
+                <p>必传，用于显示缩略图</p>
+                <input type="file" id="previewInput" accept="image/png,image/jpeg,image/jpg">
+                <button type="button" class="btn btn-outline" style="margin-top:12px" onclick="document.getElementById('previewInput').click()">
+                    <i class="fas fa-folder-open"></i> 选择图片
+                </button>
+            </div>
+            <div class="file-list" id="previewFileList"></div>
+
+            <div class="upload-section" id="sourceUploadZone">
+                <i class="fas fa-file-code"></i>
+                <h4>拖拽或点击选择源文件（AI/PSD/EPS）</h4>
+                <p>必传，设计的源文件（最大500MB）</p>
+                <input type="file" id="sourceInput" accept=".ai,.psd,.eps">
+                <button type="button" class="btn btn-outline" style="margin-top:12px" onclick="document.getElementById('sourceInput').click()">
+                    <i class="fas fa-folder-open"></i> 选择源文件
+                </button>
+            </div>
+            <div class="file-list" id="sourceFileList"></div>
+
+            <div class="form-group">
+                <label>素材名称</label>
+                <input type="text" id="uploadName" placeholder="请输入素材名称">
+            </div>
+
+            <div class="form-group">
+                <label>素材分类</label>
+                <select id="uploadCategory">
+                    <option value="single">单张设计</option>
+                    <option value="full">大促整套</option>
+                    <option value="element">拆分元素</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>素材描述（可选）</label>
+                <textarea id="uploadDescription" placeholder="添加素材描述..."></textarea>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="publicShare">
+                <label for="publicShare">发布到生态广场（其他人可见）</label>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="closeUploadModal()">取消</button>
+                <button class="btn btn-primary" onclick="uploadFiles()">
+                    <i class="fas fa-check"></i> 确认上传
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 详情模态框 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width: 600px;">
+            <button class="modal-close" onclick="closeDetailModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-info-circle" style="color: var(--accent-psd);"></i> 素材详情</h2>
+
+            <div class="detail-preview" id="detailPreview" onclick="openLightbox(currentDetailAsset?.thumbnail)" style="cursor:zoom-in;">
+                <i class="fas fa-file-image file-icon"></i>
+                <span class="zoom-hint"><i class="fas fa-search-plus"></i> 点击放大</span>
+            </div>
+
+            <div id="detailNameView" style="margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                <h3 id="detailName" style="font-size: 1.2rem; margin: 0;"></h3>
+                <button class="btn btn-outline btn-sm" id="editAssetBtn" onclick="toggleAssetEdit()" style="padding: 4px 12px;">
+                    <i class="fas fa-edit"></i> 编辑
+                </button>
+            </div>
+
+            <!-- 名称编辑 -->
+            <div id="detailNameEdit" class="hidden" style="margin-bottom: 16px;">
+                <div class="form-group">
+                    <label>素材名称</label>
+                    <input type="text" id="editAssetName" style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:0.95rem;font-family:inherit;">
+                </div>
+            </div>
+
+            <div class="detail-info">
+                <div class="detail-item" id="detailCategoryView">
+                    <label>分类</label>
+                    <span id="detailCategory">-</span>
+                </div>
+                <div class="detail-item hidden" id="detailCategoryEdit">
+                    <label>分类</label>
+                    <select id="editAssetCategory" style="flex:1;padding:6px 10px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;background:var(--surface);">
+                        <option value="single">单张设计</option>
+                        <option value="full">大促整套</option>
+                        <option value="element">拆分元素</option>
+                    </select>
+                </div>
+                <div class="detail-item">
+                    <label>源文件</label>
+                    <span id="detailSourceType">-</span>
+                </div>
+                <div class="detail-item">
+                    <label>文件大小</label>
+                    <span id="detailSize">-</span>
+                </div>
+                <div class="detail-item">
+                    <label>上传者</label>
+                    <span id="detailOwner">-</span>
+                </div>
+                <div class="detail-item">
+                    <label>上传时间</label>
+                    <span id="detailDate">-</span>
+                </div>
+            </div>
+
+            <div class="detail-description" id="detailDescView">
+                <label>素材描述</label>
+                <p id="detailDescription">无描述</p>
+            </div>
+
+            <div class="detail-description hidden" id="detailDescEdit">
+                <label>素材描述</label>
+                <textarea id="editAssetDescription" style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:inherit;min-height:60px;resize:vertical;"></textarea>
+            </div>
+
+            <div class="form-actions" id="detailActionsView">
+                <button class="btn btn-outline" id="deleteAssetBtn" onclick="showDeleteConfirm()" style="color: var(--danger); border-color: var(--danger);">
+                    <i class="fas fa-trash-alt"></i> 删除
+                </button>
+                <button class="btn btn-primary" onclick="downloadAsset()">
+                    <i class="fas fa-download"></i> 下载源文件
+                </button>
+            </div>
+
+            <div class="form-actions hidden" id="detailActionsEdit">
+                <button class="btn btn-outline" onclick="cancelAssetEdit()">取消</button>
+                <button class="btn btn-primary" onclick="saveAssetEdit()">
+                    <i class="fas fa-check"></i> 保存修改
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 找回密码模态框 -->
+    <div class="modal-overlay" id="forgotModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeForgotModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-key" style="color: var(--accent-psd);"></i> 找回密码</h2>
+
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" id="forgotPhone" placeholder="请输入注册时的邮箱">
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="closeForgotModal()">取消</button>
+                <button class="btn btn-primary" onclick="resetPassword()">
+                    <i class="fas fa-paper-plane"></i> 发送重置邮件
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户资料编辑模态框 -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeProfileModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-user-edit" style="color: var(--accent-psd);"></i> 编辑资料</h2>
+
+            <div class="form-group">
+                <label>头像</label>
+                <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
+                    <div class="avatar-preview" id="avatarPreview">
+                        <span id="avatarInitial">U</span>
+                    </div>
+                    <div class="avatar-hint">点击更换头像</div>
+                    <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" id="editUsername" placeholder="请输入用户名">
+            </div>
+
+            <div class="form-group">
+                <label>个人简介</label>
+                <textarea id="editBio" placeholder="介绍一下自己..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="closeProfileModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveProfile()">
+                    <i class="fas fa-check"></i> 保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息中心模态框 -->
+    <div class="modal-overlay" id="messagesModal">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeMessagesModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-envelope" style="color: var(--accent-psd);"></i> 消息中心</h2>
+
+            <div class="messages-list" id="messagesList">
+                <div class="message-item empty">
+                    <i class="fas fa-inbox"></i>
+                    <p>暂无消息</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 积分商城模态框 -->
+    <div class="modal-overlay" id="pointsModal">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal-close" onclick="closePointsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-coins" style="color: var(--warning);"></i> 积分商城</h2>
+
+            <div class="points-balance">
+                <div class="points-card">
+                    <div class="points-icon"><i class="fas fa-coins"></i></div>
+                    <div class="points-info">
+                        <span class="points-num" id="modalPoints">100</span>
+                        <span class="points-label">我的积分</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="points-mall">
+                <h4>积分商城</h4>
+                <div class="points-item">
+                    <div class="points-item-info">
+                        <span class="points-item-name">下载加速卡</span>
+                        <span class="points-item-desc">下载速度提升2倍，持续1天</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline" onclick="exchangePoints(50, '下载加速卡')">50积分</button>
+                </div>
+                <div class="points-item">
+                    <div class="points-item-info">
+                        <span class="points-item-name">存储空间扩容</span>
+                        <span class="points-item-desc">额外获得1GB存储空间</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline" onclick="exchangePoints(100, '存储扩容')">100积分</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 账号安全模态框 -->
+    <div class="modal-overlay" id="securityModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeSecurityModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-shield-alt" style="color: var(--accent-psd);"></i> 账号安全</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+                账号信息由 Firebase 身份验证服务安全管理。
+            </p>
+            <div style="background: var(--surface-alt); padding: 16px; border-radius: var(--radius);">
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">邮箱</label>
+                    <div style="font-weight: 600;" id="securityEmail">-</div>
+                </div>
+                <div>
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">用户ID</label>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: monospace;" id="securityUid">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认删除弹窗 -->
+    <div class="modal-overlay confirm-modal" id="confirmModal">
+        <div class="modal">
+            <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3>确认删除</h3>
+            <p>确定要删除这个素材吗？此操作无法撤销。</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" onclick="closeDeleteConfirm()">取消</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i> 删除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Banner 管理弹窗 -->
+    <div class="modal-overlay" id="bannerModal">
+        <div class="modal" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeBannerModal()"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-images" style="color: var(--accent-ai);"></i> Banner 设置</h2>
+
+            <div id="bannerListArea"></div>
+
+            <div class="upload-section" id="bannerUploadZone" style="margin-top: 16px;">
+                <i class="fas fa-plus-circle"></i>
+                <h4>添加新 Banner</h4>
+                <p>上传图片 + 设置标题和副标题</p>
+                <input type="file" id="bannerImgInput" accept="image/*" style="display:none;">
+            </div>
+
+            <div id="bannerForm" class="hidden" style="margin-top: 16px; padding: 16px; background: var(--surface-alt); border-radius: var(--radius);">
+                <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
+                    <img id="bannerImgPreview" style="width: 120px; height: 60px; object-fit: cover; border-radius: 8px; border: 2px solid var(--border);">
+                    <div style="flex: 1;">
+                        <div class="form-group">
+                            <label>Banner 标题</label>
+                            <input type="text" id="bannerTitleInput" placeholder="例如：618 大促来袭" style="width:100%;padding:8px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;">
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>副标题</label>
+                            <input type="text" id="bannerSubtitleInput" placeholder="例如：精选设计素材限时下载" style="width:100%;padding:8px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px;">
+                    <button class="btn btn-outline btn-sm" onclick="cancelBannerForm()">取消</button>
+                    <button class="btn btn-primary btn-sm" onclick="saveBannerItem()"><i class="fas fa-check"></i> 保存 Banner</button>
+                </div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px; justify-content: flex-end;">
+                <button class="btn btn-primary" onclick="closeBannerModal()"><i class="fas fa-check"></i> 完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片放大查看 Lightbox -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <div class="lightbox-toolbar">
+            <button class="lightbox-btn" onclick="lbZoomOut()" title="缩小">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <span class="lightbox-zoom-level" id="lbZoomLevel">100%</span>
+            <button class="lightbox-btn" onclick="lbZoomIn()" title="放大">
+                <i class="fas fa-search-plus"></i>
+            </button>
+            <button class="lightbox-btn" onclick="lbReset()" title="重置">
+                <i class="fas fa-redo"></i>
+            </button>
+            <div class="lightbox-separator"></div>
+            <button class="lightbox-btn close" onclick="lbClose()" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="lightbox-image-wrapper" id="lbImageWrapper">
+            <img id="lbImage" src="" alt="">
+        </div>
+        <div class="lightbox-hint" id="lbHint">按住鼠标拖动平移图片</div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // ========== Firebase 数据操作 ==========
+
+        // Firestore 引用
+        const assetsRef = db.collection('assets');
+        const usersRef = db.collection('users');
+        const bannersRef = db.collection('banners');
+
+        // 获取当前用户资料
+        async function loadUserProfile(uid) {
+            const doc = await usersRef.doc(uid).get();
+            if (doc.exists) {
+                return { uid, ...doc.data() };
+            } else {
+                // 如果没有资料，创建一个默认的
+                const user = auth.currentUser;
+                const profile = {
+                    username: user.email ? user.email.split('@')[0] : '用户',
+                    email: user.email || '',
+                    points: 100,
+                    bio: '',
+                    avatarUrl: '',
+                    createdAt: new Date().toISOString()
+                };
+                await usersRef.doc(uid).set(profile);
+                return { uid, ...profile };
+            }
+        }
+
+        // 保存用户资料
+        async function saveUserProfile(profile) {
+            await usersRef.doc(profile.uid).set(profile, { merge: true });
+        }
+
+        // ========== 素材操作 (Firestore) ==========
+
+        async function getMyAssets() {
+            const snapshot = await assetsRef.where('ownerId', '==', currentUser.uid).orderBy('date', 'desc').get();
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        async function getPublicAssets() {
+            const snapshot = await assetsRef.where('isPublic', '==', true).orderBy('date', 'desc').get();
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        async function getFavoriteAssets() {
+            const favSnapshot = await db.collection('favorites').doc(currentUser.uid).collection('items').get();
+            const favIds = favSnapshot.docs.map(doc => doc.id);
+            if (favIds.length === 0) return [];
+
+            // 批量获取收藏的素材
+            const results = [];
+            for (const id of favIds) {
+                const doc = await assetsRef.doc(id).get();
+                if (doc.exists) results.push({ id: doc.id, ...doc.data() });
+            }
+            return results;
+        }
+
+        async function toggleFavorite(assetId) {
+            if (!currentUser) { showToast('请先登录', 'error'); return; }
+            const favRef = db.collection('favorites').doc(currentUser.uid).collection('items').doc(assetId);
+            const doc = await favRef.get();
+
+            if (doc.exists) {
+                await favRef.delete();
+                showToast('已取消收藏', 'success');
+            } else {
+                await favRef.set({ addedAt: new Date().toISOString() });
+                showToast('已添加到收藏', 'success');
+            }
+            renderAssets();
+            updateStats();
+        }
+
+        async function isFavorite(assetId) {
+            if (!currentUser) return false;
+            const doc = await db.collection('favorites').doc(currentUser.uid).collection('items').doc(assetId).get();
+            return doc.exists;
+        }
+
+        async function uploadFiles() {
+            if (!selectedPreviewFile) { showToast('请上传预览图', 'error'); return; }
+            if (!selectedSourceFile) { showToast('请上传源文件', 'error'); return; }
+
+            const name = document.getElementById('uploadName').value.trim();
+            const category = document.getElementById('uploadCategory').value;
+            const description = document.getElementById('uploadDescription').value;
+            const isPublic = document.getElementById('publicShare').checked;
+
+            if (!name) { showToast('请输入素材名称', 'error'); return; }
+
+            showToast('正在上传文件...', 'success');
+
+            try {
+                const assetId = assetsRef.doc().id;
+                const sourceType = getFileType(selectedSourceFile.name);
+                const thumbExt = selectedPreviewFile.name.split('.').pop().toLowerCase();
+                const sourceExt = selectedSourceFile.name.split('.').pop().toLowerCase();
+
+                // 1. 上传预览图到 Storage
+                const thumbRef = storage.ref(`thumbnails/${currentUser.uid}/${assetId}.${thumbExt}`);
+                await thumbRef.put(selectedPreviewFile);
+                const thumbnailUrl = await thumbRef.getDownloadURL();
+
+                // 2. 上传源文件到 Storage
+                const sourceRef = storage.ref(`sources/${currentUser.uid}/${assetId}.${sourceExt}`);
+                await sourceRef.put(selectedSourceFile);
+                const sourceUrl = await sourceRef.getDownloadURL();
+
+                // 3. 保存元数据到 Firestore
+                await assetsRef.doc(assetId).set({
+                    name, category, sourceType,
+                    previewType: getFileType(selectedPreviewFile.name),
+                    sourceSize: selectedSourceFile.size,
+                    previewSize: selectedPreviewFile.size,
+                    date: new Date().toISOString(),
+                    description, thumbnailUrl, sourceUrl,
+                    ownerId: currentUser.uid,
+                    ownerName: currentUser.username,
+                    isPublic
+                });
+
+                await renderAssets();
+                await updateStats();
+                showToast('上传成功！', 'success');
+                closeUploadModal();
+            } catch (err) {
+                console.error('上传失败:', err);
+                showToast('上传失败: ' + err.message, 'error');
+            }
+        }
+
+        async function downloadAsset() {
+            if (!currentDetailAsset || !currentDetailAsset.sourceUrl) {
+                showToast('源文件不存在', 'error'); return;
+            }
+            const link = document.createElement('a');
+            link.href = currentDetailAsset.sourceUrl;
+            link.download = currentDetailAsset.name + '.' + currentDetailAsset.sourceType;
+            link.target = '_blank';
+            link.click();
+            showToast('正在下载 ' + currentDetailAsset.name, 'success');
+            closeDetailModal();
+        }
+
+        async function quickDownload(id) {
+            const assets = currentPage === 'my' ? await getMyAssets() :
+                           (currentPage === 'favorite' ? await getFavoriteAssets() : await getPublicAssets());
+            const asset = assets.find(a => a.id === id);
+            if (!asset || !asset.sourceUrl) { showToast('源文件不存在', 'error'); return; }
+            const link = document.createElement('a');
+            link.href = asset.sourceUrl;
+            link.download = asset.name + '.' + asset.sourceType;
+            link.target = '_blank';
+            link.click();
+            showToast('正在下载 ' + asset.name, 'success');
+        }
+
+        async function confirmDelete() {
+            if (!currentDetailId) return;
+            try {
+                const asset = (await assetsRef.doc(currentDetailId).get()).data();
+                if (asset) {
+                    // 删除 Storage 中的文件
+                    if (asset.thumbnailUrl) {
+                        try { await storage.refFromURL(asset.thumbnailUrl).delete(); } catch (e) {}
+                    }
+                    if (asset.sourceUrl) {
+                        try { await storage.refFromURL(asset.sourceUrl).delete(); } catch (e) {}
+                    }
+                }
+                // 删除 Firestore 文档
+                await assetsRef.doc(currentDetailId).delete();
+
+                // 从收藏中删除
+                const favRef = db.collection('favorites').doc(currentUser.uid).collection('items').doc(currentDetailId);
+                await favRef.delete();
+
+                await renderAssets();
+                await updateStats();
+                closeDeleteConfirm();
+                closeDetailModal();
+                showToast('素材已删除', 'success');
+            } catch (err) { showToast('删除失败', 'error'); }
+            currentDetailId = null;
+        }
+
+        async function saveAssetEdit() {
+            if (!currentDetailId || !currentDetailAsset) return;
+            const newName = document.getElementById('editAssetName').value.trim();
+            const newCategory = document.getElementById('editAssetCategory').value;
+            const newDescription = document.getElementById('editAssetDescription').value.trim();
+            if (!newName) { showToast('素材名称不能为空', 'error'); return; }
+
+            try {
+                await assetsRef.doc(currentDetailId).update({
+                    name: newName, category: newCategory, description: newDescription
+                });
+                currentDetailAsset.name = newName;
+                currentDetailAsset.category = newCategory;
+                currentDetailAsset.description = newDescription;
+
+                document.getElementById('detailName').textContent = newName;
+                document.getElementById('detailCategory').textContent = CATEGORY_NAMES[newCategory] || '单张设计';
+                document.getElementById('detailDescription').textContent = newDescription || '无描述';
+
+                cancelAssetEdit();
+                await renderAssets();
+                showToast('修改已保存', 'success');
+            } catch (err) { showToast('保存失败', 'error'); }
+        }
+
+        async function togglePublic(assetId) {
+            const myAssets = await getMyAssets();
+            const asset = myAssets.find(a => a.id === assetId);
+            if (!asset) return;
+            const newPublic = !asset.isPublic;
+            await assetsRef.doc(assetId).update({ isPublic: newPublic });
+            showToast(newPublic ? '已展示到素材广场' : '已取消展示', 'success');
+            renderAssets();
+            updateStats();
+        }
+
+        async function updateStats() {
+            try {
+                const myAssets = await getMyAssets();
+                const favAssets = await getFavoriteAssets();
+                const pubAssets = await getPublicAssets();
+                const totalEl = document.getElementById('totalCount');
+                const favEl = document.getElementById('favoriteCount');
+                const pubEl = document.getElementById('publicCount');
+                if (totalEl) totalEl.textContent = myAssets.length;
+                if (favEl) favEl.textContent = favAssets.length;
+                if (pubEl) pubEl.textContent = pubAssets.length;
+            } catch (e) {}
+        }
+
+        // ========== Banner 操作 (Firestore) ==========
+
+        async function getBannerList() {
+            const snapshot = await bannersRef.orderBy('order').get();
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        async function addBanner(image, title, subtitle) {
+            const banners = await getBannerList();
+            const bannerId = bannersRef.doc().id;
+            const order = banners.length;
+
+            // 上传图片到 Storage
+            const ext = image.name.split('.').pop().toLowerCase();
+            const thumbRef = storage.ref(`banners/${bannerId}.${ext}`);
+            await thumbRef.put(image);
+            const imageUrl = await thumbRef.getDownloadURL();
+
+            await bannersRef.doc(bannerId).set({ image: imageUrl, title, subtitle, order, createdAt: new Date().toISOString() });
+            return bannerId;
+        }
+
+        async function deleteBannerFromFirestore(bannerId) {
+            const banner = (await bannersRef.doc(bannerId).get()).data();
+            if (banner && banner.image) {
+                try { await storage.refFromURL(banner.image).delete(); } catch (e) {}
+            }
+            await bannersRef.doc(bannerId).delete();
+        }
+
+        async function moveBannerInFirestore(bannerId, dir) {
+            const banners = await getBannerList();
+            const idx = banners.findIndex(b => b.id === bannerId);
+            if (idx === -1) return;
+
+            const targetIdx = idx + dir;
+            if (targetIdx < 0 || targetIdx >= banners.length) return;
+
+            // 交换 order 字段
+            await bannersRef.doc(banners[idx].id).update({ order: targetIdx });
+            await bannersRef.doc(banners[targetIdx].id).update({ order: idx });
+        }
+
+        // ========== 配置
+        const MAX_FILE_SIZE = 500 * 1024 * 1024;
+
+        // 分类名称映射
+        const CATEGORY_NAMES = {
+            'full': '大促整套',
+            'single': '单张设计',
+            'element': '拆分元素'
+        };
+
+        // 状态变量
+        let currentUser = null;
+        let currentPage = 'my';
+        let currentFilter = 'all';
+        let currentCategory = 'all';
+        let currentSort = 'newest';
+        let currentMonth = 'all';
+        let searchQuery = '';
+        let selectedPreviewFile = null;
+        let selectedSourceFile = null;
+        let currentDetailId = null;
+        let currentDetailAsset = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                initEventListeners();
+                console.log('初始化完成 - Firebase模式');
+            } catch (e) {
+                console.error('初始化错误:', e);
+            }
+        });
+
+        // 事件监听
+        function initEventListeners() {
+            // 用户菜单
+            document.getElementById('userMenu').addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.getElementById('userDropdown').classList.toggle('show');
+            });
+            document.addEventListener('click', () => {
+                document.getElementById('userDropdown').classList.remove('show');
+            });
+
+            // 导航页切换
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentPage = tab.dataset.page;
+                    renderAssets();
+                    updateStats();
+                    updateCategoryVisibility();
+                });
+            });
+
+            // 分类切换
+            document.querySelectorAll('.category-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+                    tag.classList.add('active');
+                    currentCategory = tag.dataset.category;
+                    renderAssets();
+                });
+            });
+
+            // 搜索和筛选
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderAssets();
+            });
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderAssets();
+                });
+            });
+
+            const sortSelectEl = document.getElementById('sortSelect');
+            if (sortSelectEl) { sortSelectEl.addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                renderAssets();
+            });}
+
+            const monthSelectEl = document.getElementById('monthSelect');
+            if (monthSelectEl) { monthSelectEl.addEventListener('change', (e) => {
+                currentMonth = e.target.value;
+                renderAssets();
+            });}
+
+            // 上传模态框
+            const uploadModal = document.getElementById('uploadModal');
+            if (uploadModal) {
+                uploadModal.addEventListener('click', (e) => {
+                    if (e.target.id === 'uploadModal') closeUploadModal();
+                });
+            }
+
+            // 预览图上传
+            const previewZone = document.getElementById('previewUploadZone');
+            const previewInput = document.getElementById('previewInput');
+            console.log('previewZone:', previewZone, 'previewInput:', previewInput);
+            if (previewZone && previewInput) {
+                previewZone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+                previewZone.addEventListener('dragleave', function() { this.classList.remove('dragover'); });
+                previewZone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.remove('dragover');
+                    if (e.dataTransfer.files.length > 0) {
+                        handlePreviewFiles(e.dataTransfer.files);
+                    }
+                });
+                previewInput.addEventListener('change', function(e) {
+                    console.log('previewInput changed', this.files);
+                    if (this.files && this.files.length > 0) {
+                        handlePreviewFiles(this.files);
+                    }
+                });
+            }
+
+            // 源文件上传
+            const sourceZone = document.getElementById('sourceUploadZone');
+            const sourceInput = document.getElementById('sourceInput');
+            if (sourceZone && sourceInput) {
+                sourceZone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+                sourceZone.addEventListener('dragleave', function() { this.classList.remove('dragover'); });
+                sourceZone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.remove('dragover');
+                    if (e.dataTransfer.files.length > 0) {
+                        handleSourceFiles(e.dataTransfer.files);
+                    }
+                });
+                sourceInput.addEventListener('change', function(e) {
+                    console.log('sourceInput changed', this.files);
+                    if (this.files && this.files.length > 0) {
+                        handleSourceFiles(this.files);
+                    }
+                });
+            }
+
+            // 详情模态框
+            document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeDetailModal(); });
+            document.getElementById('confirmModal').addEventListener('click', (e) => { if (e.target.id === 'confirmModal') closeDeleteConfirm(); });
+
+            document.getElementById('loginPassword').addEventListener('keypress', (e) => { if (e.key === 'Enter') accountLogin(); });
+        }
+
+        function updateCategoryVisibility() {
+            // 素材分类导航可见性已移除
+        }
+
+        function switchToRegister() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('registerPage').classList.remove('hidden');
+        }
+
+        function switchToLogin() {
+            document.getElementById('registerPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
+
+        // ========== Firebase 登录注册 ==========
+
+        async function accountLogin() {
+            const email = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showToast('请输入邮箱和密码', 'error');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showToast('请输入有效的邮箱地址', 'error');
+                return;
+            }
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showToast('登录成功！', 'success');
+            } catch (err) {
+                if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                    showToast('邮箱或密码错误', 'error');
+                } else {
+                    showToast('登录失败: ' + err.message, 'error');
+                }
+            }
+        }
+
+        async function register() {
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (!username || !email || !password) {
+                showToast('请填写所有信息', 'error');
+                return;
+            }
+
+            try {
+                const credential = await auth.createUserWithEmailAndPassword(email, password);
+                // 保存用户资料到 Firestore
+                await usersRef.doc(credential.user.uid).set({
+                    username, email, points: 100, bio: '',
+                    createdAt: new Date().toISOString()
+                });
+                showToast('注册成功！', 'success');
+            } catch (err) {
+                if (err.code === 'auth/email-already-in-use') {
+                    showToast('该邮箱已被注册', 'error');
+                } else if (err.code === 'auth/weak-password') {
+                    showToast('密码强度太弱，至少6位', 'error');
+                } else {
+                    showToast('注册失败: ' + err.message, 'error');
+                }
+            }
+        }
+
+        // 找回密码（Firebase 密码重置邮件）
+        function showForgotPassword() { document.getElementById('forgotModal').classList.add('active'); }
+        function closeForgotModal() { document.getElementById('forgotModal').classList.remove('active'); }
+
+        async function resetPassword() {
+            const email = document.getElementById('forgotPhone').value.trim();
+
+            if (!email) {
+                showToast('请输入邮箱', 'error');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showToast('请输入有效的邮箱地址', 'error');
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showToast('密码重置邮件已发送，请查收', 'success');
+                closeForgotModal();
+            } catch (err) {
+                if (err.code === 'auth/user-not-found') {
+                    showToast('该邮箱未注册', 'error');
+                } else {
+                    showToast('操作失败: ' + err.message, 'error');
+                }
+            }
+        }
+
+        // 账号安全
+        function showSecuritySettings() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('securityEmail').textContent = currentUser?.email || '-';
+            document.getElementById('securityUid').textContent = currentUser?.uid || '-';
+            document.getElementById('securityModal').classList.add('active');
+        }
+
+        function closeSecurityModal() { document.getElementById('securityModal').classList.remove('active'); }
+
+        function bindPhone() {
+            showToast('手机绑定需要配置短信服务，请联系管理员', 'error');
+        }
+
+        // 退出登录
+        function logout() {
+            document.getElementById('userDropdown').classList.remove('show');
+            auth.signOut().then(() => {
+                showToast('已退出登录', 'success');
+                showLoginPage();
+            });
+        }
+
+        function clearAllData() {
+            document.getElementById('userDropdown').classList.remove('show');
+            if (confirm('确定要清除所有数据吗？')) {
+                localStorage.clear();
+                showToast('已清除本地数据', 'success');
+            }
+        }
+
+        // Firebase 监听登录状态（页面加载时自动调用）
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = await loadUserProfile(user.uid);
+                showMainApp();
+            } else {
+                currentUser = null;
+                showLoginPage();
+            }
+        });
+
+        function showLoginPage() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('registerPage').classList.add('hidden');
+        }
+
+        function showMainApp() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('registerPage').classList.add('hidden');
+            updateUserInfo();
+            renderAssets();
+            updateStats();
+            updateCategoryVisibility();
+            initBanner();
+        }
+
+        // ========== 轮播 Banner (Firebase) ==========
+        let bannerIndex = 0;
+        let bannerInterval = null;
+        let bannerList = [];
+
+        async function initBanner() {
+            bannerList = await getBannerList();
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+
+            if (bannerList.length === 0) {
+                carousel.innerHTML = `
+                    <div class="banner-placeholder">
+                        <i class="fas fa-images"></i>
+                        <p>点击右上角「设置」添加 Banner 图片</p>
+                    </div>
+                    <div class="banner-dots" id="bannerDots"></div>
+                    <button class="banner-arrow prev" id="bannerPrev" style="display:none;"><i class="fas fa-chevron-left"></i></button>
+                    <button class="banner-arrow next" id="bannerNext" style="display:none;"><i class="fas fa-chevron-right"></i></button>
+                `;
+                return;
+            }
+
+            renderBannerSlides();
+            startBannerAutoPlay();
+
+            document.getElementById('bannerPrev')?.addEventListener('click', () => { stopBannerAutoPlay(); goBanner(bannerIndex - 1); });
+            document.getElementById('bannerNext')?.addEventListener('click', () => { stopBannerAutoPlay(); goBanner(bannerIndex + 1); });
+        }
+
+        function renderBannerSlides() {
+            const carousel = document.getElementById('bannerCarousel');
+
+            carousel.innerHTML = `
+                <div class="banner-track" id="bannerTrack">
+                    ${bannerList.map(b => `
+                        <div class="banner-slide">
+                            <img src="${b.image}" alt="${b.title}">
+                            <div class="banner-overlay">
+                                <h2>${b.title}</h2>
+                                <p>${b.subtitle}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="banner-dots" id="bannerDots">
+                    ${bannerList.map((_, i) => `<div class="banner-dot ${i === 0 ? 'active' : ''}" onclick="goBanner(${i})"></div>`).join('')}
+                </div>
+                <button class="banner-arrow prev" id="bannerPrev"><i class="fas fa-chevron-left"></i></button>
+                <button class="banner-arrow next" id="bannerNext"><i class="fas fa-chevron-right"></i></button>
+            `;
+
+            document.getElementById('bannerPrev')?.addEventListener('click', () => { stopBannerAutoPlay(); goBanner(bannerIndex - 1); });
+            document.getElementById('bannerNext')?.addEventListener('click', () => { stopBannerAutoPlay(); goBanner(bannerIndex + 1); });
+
+            if (bannerList.length <= 1) {
+                document.getElementById('bannerPrev').style.display = 'none';
+                document.getElementById('bannerNext').style.display = 'none';
+            }
+        }
+
+        function goBanner(index) {
+            if (bannerList.length <= 1) return;
+            bannerIndex = (index + bannerList.length) % bannerList.length;
+            const track = document.getElementById('bannerTrack');
+            if (track) track.style.transform = `translateX(-${bannerIndex * 100}%)`;
+            document.querySelectorAll('.banner-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === bannerIndex);
+            });
+            startBannerAutoPlay();
+        }
+
+        function startBannerAutoPlay() {
+            stopBannerAutoPlay();
+            if (bannerList.length <= 1) return;
+            bannerInterval = setInterval(() => goBanner(bannerIndex + 1), 5000);
+        }
+
+        function stopBannerAutoPlay() {
+            if (bannerInterval) { clearInterval(bannerInterval); bannerInterval = null; }
+        }
+
+        // ========== Banner 管理 (Firebase) ==========
+        let pendingBannerFile = null;
+
+        function showBannerManager() {
+            if (!currentUser) { showToast('请先登录', 'error'); return; }
+            document.getElementById('userDropdown').classList.remove('show');
+            renderBannerList();
+            document.getElementById('bannerModal').classList.add('active');
+        }
+
+        function closeBannerModal() {
+            document.getElementById('bannerModal').classList.remove('active');
+            cancelBannerForm();
+        }
+
+        async function renderBannerList() {
+            const area = document.getElementById('bannerListArea');
+            const list = await getBannerList();
+            if (list.length === 0) {
+                area.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:20px;">暂无 Banner，点击下方添加</p>';
+                return;
+            }
+            area.innerHTML = list.map((b, i) => `
+                <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface-alt);border-radius:var(--radius-sm);margin-bottom:10px;">
+                    <img src="${b.image}" style="width:120px;height:50px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:600;">${b.title}</div>
+                        <div style="font-size:0.8rem;color:var(--text-muted);">${b.subtitle}</div>
+                    </div>
+                    <div style="display:flex;gap:6px;flex-shrink:0;">
+                        <button class="btn btn-outline btn-sm" onclick="moveBannerFB('${b.id}', -1)" ${i === 0 ? 'disabled style="opacity:0.3;"' : ''}><i class="fas fa-arrow-left"></i></button>
+                        <button class="btn btn-outline btn-sm" onclick="moveBannerFB('${b.id}', 1)" ${i === list.length - 1 ? 'disabled style="opacity:0.3;"' : ''}><i class="fas fa-arrow-right"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteBannerFB('${b.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function initBannerUpload() {
+            const zone = document.getElementById('bannerUploadZone');
+            const input = document.getElementById('bannerImgInput');
+            zone.addEventListener('click', () => input.click());
+            input.addEventListener('change', async (e) => {
+                if (!e.target.files[0]) return;
+                pendingBannerFile = e.target.files[0];
+                const data = await readFileAsDataURL(e.target.files[0]);
+                document.getElementById('bannerImgPreview').src = data;
+                document.getElementById('bannerUploadZone').classList.add('hidden');
+                document.getElementById('bannerForm').classList.remove('hidden');
+            });
+        }
+
+        function cancelBannerForm() {
+            pendingBannerFile = null;
+            document.getElementById('bannerImgInput').value = '';
+            document.getElementById('bannerImgPreview').src = '';
+            document.getElementById('bannerTitleInput').value = '';
+            document.getElementById('bannerSubtitleInput').value = '';
+            document.getElementById('bannerUploadZone').classList.remove('hidden');
+            document.getElementById('bannerForm').classList.add('hidden');
+        }
+
+        async function saveBannerItem() {
+            if (!pendingBannerFile) { showToast('请先选择图片', 'error'); return; }
+            const title = document.getElementById('bannerTitleInput').value.trim();
+            const subtitle = document.getElementById('bannerSubtitleInput').value.trim();
+            if (!title) { showToast('请输入标题', 'error'); return; }
+
+            try {
+                await addBanner(pendingBannerFile, title, subtitle);
+                await renderBannerList();
+                cancelBannerForm();
+                await initBanner(); // 刷新轮播
+                showToast('Banner 已添加', 'success');
+            } catch (err) {
+                showToast('添加失败: ' + err.message, 'error');
+            }
+        }
+
+        async function deleteBannerFB(bannerId) {
+            try {
+                await deleteBannerFromFirestore(bannerId);
+                await renderBannerList();
+                await initBanner();
+                showToast('已删除', 'success');
+            } catch (err) { showToast('删除失败', 'error'); }
+        }
+
+        async function moveBannerFB(bannerId, dir) {
+            try {
+                await moveBannerInFirestore(bannerId, dir);
+                await renderBannerList();
+                await initBanner();
+            } catch (err) {}
+        }
+
+        // 初始化 Banner 上传
+        initBannerUpload();
+
+        function updateUserInfo() {
+            if (!currentUser) return;
+            const avatar = document.getElementById('userAvatarHeader');
+            const avatarText = document.getElementById('userAvatarText');
+            const profileName = document.getElementById('userProfileName');
+            const profileBio = document.getElementById('userProfileBio');
+
+            const initial = (currentUser.username || 'U').charAt(0).toUpperCase();
+            if (avatar) avatar.textContent = initial;
+            if (avatarText) avatarText.textContent = initial;
+            if (profileName) profileName.textContent = currentUser.username || '用户名';
+            if (profileBio) profileBio.textContent = currentUser.bio || '这个人很懒，什么都没写...';
+            if (document.getElementById('userPoints')) {
+                document.getElementById('userPoints').textContent = currentUser.points || 100;
+            }
+        }
+
+        async function saveProfile() {
+            const username = document.getElementById('editUsername').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+
+            if (!username) { showToast('用户名不能为空', 'error'); return; }
+
+            currentUser.username = username;
+            currentUser.bio = bio;
+            await saveUserProfile(currentUser);
+            updateUserInfo();
+            closeProfileModal();
+            showToast('资料已保存', 'success');
+        }
+
+        function showPage(page) {
+            document.getElementById('userDropdown').classList.remove('show');
+            currentPage = page;
+            currentCategory = 'all';
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.page === page);
+            });
+            renderAssets();
+            updateStats();
+            updateCategoryVisibility();
+        }
+
+        // 显示全部素材
+        function showAll() {
+            document.getElementById('userDropdown').classList.remove('show');
+            currentPage = 'all';
+            currentCategory = 'all';
+            selectCategory('all');
+            renderAssets();
+            updateStats();
+        }
+
+        // 显示我的素材
+        function showMyAssets() {
+            document.getElementById('userDropdown').classList.remove('show');
+            currentPage = 'my';
+            currentCategory = 'all';
+            selectCategory('all');
+            renderAssets();
+            updateStats();
+        }
+
+        // 显示我的收藏
+        function showFavorites() {
+            document.getElementById('userDropdown').classList.remove('show');
+            currentPage = 'favorite';
+            currentCategory = 'all';
+            selectCategory('all');
+            renderAssets();
+            updateStats();
+        }
+
+        // 显示素材广场
+        function showPublicGallery() {
+            document.getElementById('userDropdown').classList.remove('show');
+            currentPage = 'public';
+            currentCategory = 'all';
+            selectCategory('all');
+            renderAssets();
+            updateStats();
+        }
+
+        // 显示首页（全部素材）
+        function showHome() {
+            document.getElementById('userDropdown').classList.remove('show');
+            currentPage = 'all';
+            currentCategory = 'all';
+            selectCategory('all');
+            renderAssets();
+            updateStats();
+        }
+
+        // 顶部分类切换
+        function selectTopCategory(category, btn) {
+            document.querySelectorAll('.top-cat-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            currentCategory = category;
+            // 同时更新中间分类导航按钮状态
+            document.querySelectorAll('.category-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.category === category);
+            });
+            renderAssets();
+        }
+
+        // 搜索功能
+        function handleSearch(value) {
+            searchQuery = value.toLowerCase();
+            renderAssets();
+        }
+
+        // 切换素材是否在广场展示
+        async function togglePublic(assetId) {
+            try {
+                const asset = (await assetsRef.doc(assetId).get()).data();
+                if (!asset) return;
+                const newPublic = !asset.isPublic;
+                await assetsRef.doc(assetId).update({ isPublic: newPublic });
+                showToast(newPublic ? '已展示到素材广场' : '已取消展示', 'success');
+                renderAssets();
+                updateStats();
+            } catch (err) { showToast('操作失败', 'error'); }
+        }
+
+        // 显示消息
+        function showMessages() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('messagesModal').classList.add('active');
+            renderMessages();
+        }
+
+        function closeMessagesModal() {
+            document.getElementById('messagesModal').classList.remove('active');
+        }
+
+        function renderMessages() {
+            const messages = JSON.parse(localStorage.getItem('userMessages_' + currentUser.uid) || '[]');
+            const list = document.getElementById('messagesList');
+
+            if (messages.length === 0) {
+                list.innerHTML = `
+                    <div class="message-item empty">
+                        <i class="fas fa-inbox"></i>
+                        <p>暂无消息</p>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = messages.map(msg => `
+                <div class="message-item">
+                    <div class="message-icon"><i class="fas fa-${msg.icon}"></i></div>
+                    <div class="message-content">
+                        <div class="message-title">${msg.title}</div>
+                        <div class="message-desc">${msg.content}</div>
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 显示积分
+        function showPoints() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('modalPoints').textContent = currentUser.points || 100;
+            document.getElementById('pointsModal').classList.add('active');
+        }
+
+        function closePointsModal() {
+            document.getElementById('pointsModal').classList.remove('active');
+        }
+
+        async function exchangePoints(cost, item) {
+            const points = currentUser.points || 100;
+            if (points < cost) {
+                showToast('积分不足', 'error');
+                return;
+            }
+
+            currentUser.points = points - cost;
+            await saveUserProfile(currentUser);
+            document.getElementById('modalPoints').textContent = currentUser.points;
+            document.getElementById('userPoints').textContent = currentUser.points;
+            showToast('兑换成功：' + item, 'success');
+        }
+
+        function addMessage(icon, title, content) {
+            if (!currentUser) return;
+            const key = 'userMessages_' + currentUser.uid;
+            const messages = JSON.parse(localStorage.getItem(key) || '[]');
+            messages.unshift({
+                icon: icon,
+                title: title,
+                content: content,
+                time: new Date().toLocaleString('zh-CN')
+            });
+            localStorage.setItem(key, JSON.stringify(messages));
+
+            // 更新未读数
+            const badge = document.getElementById('msgBadge');
+            if (badge) {
+                badge.textContent = messages.length;
+                badge.style.display = messages.length > 0 ? 'block' : 'none';
+            }
+        }
+
+        // 显示资料编辑
+        function showSecuritySettings() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('editUsername').value = currentUser.username || '';
+            document.getElementById('editBio').value = currentUser.bio || '';
+            document.getElementById('avatarInitial').textContent = (currentUser.username || 'U').charAt(0).toUpperCase();
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        function saveProfile() {
+            const username = document.getElementById('editUsername').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+
+            if (!username) {
+                showToast('用户名不能为空', 'error');
+                return;
+            }
+
+            currentUser.username = username;
+            currentUser.bio = bio;
+            await saveUserProfile(currentUser);
+            updateUserInfo();
+            closeProfileModal();
+            showToast('资料已保存', 'success');
+        }
+
+        function updateUserInfo() {
+            if (!currentUser) return;
+            const avatar = document.getElementById('userAvatarHeader');
+            const avatarText = document.getElementById('userAvatarText');
+            const profileName = document.getElementById('userProfileName');
+            const profileBio = document.getElementById('userProfileBio');
+
+            const initial = (currentUser.username || 'U').charAt(0).toUpperCase();
+            if (avatar) avatar.textContent = initial;
+            if (avatarText) avatarText.textContent = initial;
+            if (profileName) profileName.textContent = currentUser.username || '用户名';
+            if (profileBio) profileBio.textContent = currentUser.bio || '这个人很懒，什么都没写...';
+            if (document.getElementById('userPoints')) {
+                document.getElementById('userPoints').textContent = currentUser.points || 100;
+            }
+        }
+
+        // 选择分类
+        function selectCategory(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.category === category);
+            });
+            renderAssets();
+        }
+
+        
+        // 渲染素材 (Firebase)
+        async function renderAssets() {
+            let assets;
+            try {
+                if (currentPage === 'my') {
+                    assets = await getMyAssets();
+                } else if (currentPage === 'favorite') {
+                    assets = await getFavoriteAssets();
+                } else {
+                    assets = await getPublicAssets();
+                }
+            } catch (err) {
+                console.error('加载素材失败:', err);
+                assets = [];
+            }
+
+            // 构建月份选项（从当前页面已有素材中提取年月）
+            buildMonthOptions(assets);
+
+            // 分类筛选
+            if (currentCategory !== 'all') {
+                assets = assets.filter(a => a.category === currentCategory);
+            }
+
+            // 文件类型筛选
+            if (currentFilter !== 'all') {
+                assets = assets.filter(a => a.sourceType === currentFilter);
+            }
+
+            // 搜索
+            if (searchQuery) {
+                assets = assets.filter(a =>
+                    a.name.toLowerCase().includes(searchQuery) ||
+                    (a.description && a.description.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            // 月份筛选
+            if (currentMonth !== 'all') {
+                assets = assets.filter(a => a.date && a.date.startsWith(currentMonth));
+            }
+
+            // 排序
+            switch (currentSort) {
+                case 'newest': assets.sort((a, b) => new Date(b.date) - new Date(a.date)); break;
+                case 'oldest': assets.sort((a, b) => new Date(a.date) - new Date(b.date)); break;
+                case 'name-asc': assets.sort((a, b) => a.name.localeCompare(b.name)); break;
+                case 'name-desc': assets.sort((a, b) => b.name.localeCompare(a.name)); break;
+            }
+
+            const grid = document.getElementById('assetsGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (assets.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                const messages = {
+                    'my': { title: '还没有素材', desc: '点击上传按钮添加你的第一个设计素材' },
+                    'favorite': { title: '还没有收藏', desc: '在广场中找到喜欢的素材点击收藏' },
+                    'public': { title: '广场空空如也', desc: '成为第一个发布素材的人吧' }
+                };
+                emptyState.querySelector('h3').textContent = messages[currentPage].title;
+                emptyState.querySelector('p').textContent = messages[currentPage].desc;
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            // 检查收藏状态
+            const favIds = new Set();
+            if (currentUser) {
+                try {
+                    const favSnapshot = await db.collection('favorites').doc(currentUser.uid).collection('items').get();
+                    favSnapshot.forEach(doc => favIds.add(doc.id));
+                } catch (e) {}
+            }
+
+            grid.innerHTML = assets.map(asset => {
+                const isFav = favIds.has(asset.id);
+                const canManage = currentUser && currentUser.uid === asset.ownerId;
+                return `
+                <div class="asset-card" onclick="openDetail('${asset.id}')">
+                    <div class="asset-preview">
+                        ${asset.thumbnailUrl ? `<img src="${asset.thumbnailUrl}" alt="${asset.name}">` : `<i class="fas fa-image file-icon"></i>`}
+                        <span class="asset-badge ${asset.sourceType}">${(asset.sourceType || '').toUpperCase()}</span>
+                        <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${asset.id}')">
+                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                        ${currentPage === 'public' ? `<span class="asset-category-badge">${CATEGORY_NAMES[asset.category] || '单张设计'}</span>` : ''}
+                        ${currentPage !== 'my' ? `<span class="asset-owner-badge"><i class="fas fa-user"></i> ${asset.ownerName}</span>` : ''}
+                    </div>
+                    <div class="asset-info">
+                        <div class="asset-name" title="${asset.name}">${asset.name}</div>
+                        <div class="asset-meta">
+                            <span><i class="fas fa-hdd"></i> ${formatFileSize(asset.sourceSize || 0)}</span>
+                            <span>${formatDate(asset.date)}</span>
+                        </div>
+                        <div class="asset-actions">
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); quickDownload('${asset.id}')">
+                                <i class="fas fa-download"></i> 下载
+                            </button>
+                            ${canManage ? `
+                            <button class="btn btn-outline btn-sm ${asset.isPublic ? 'btn-warning' : ''}" onclick="event.stopPropagation(); togglePublic('${asset.id}')">
+                                <i class="fas fa-${asset.isPublic ? 'eye-slash' : 'globe'}"></i> ${asset.isPublic ? '取消展示' : '展示'}
+                            </button>
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); quickDelete('${asset.id}')" style="color: var(--danger); border-color: var(--danger);">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // 更新统计
+        async function updateStats() {
+            const myAssets = await getMyAssets();
+            const favoriteAssets = await getFavoriteAssets();
+            const publicAssets = await getPublicAssets();
+
+            const totalEl = document.getElementById('totalCount');
+            const favEl = document.getElementById('favoriteCount');
+            const publicEl = document.getElementById('publicCount');
+
+            if (totalEl) totalEl.textContent = myAssets.length;
+            if (favEl) favEl.textContent = favoriteAssets.length;
+            if (publicEl) publicEl.textContent = publicAssets.length;
+        }
+
+        // 上传相关
+        function openUploadModal() { document.getElementById('uploadModal').classList.add('active'); }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            selectedPreviewFile = null;
+            selectedSourceFile = null;
+            document.getElementById('previewFileList').innerHTML = '';
+            document.getElementById('sourceFileList').innerHTML = '';
+            document.getElementById('uploadName').value = '';
+            document.getElementById('uploadDescription').value = '';
+            document.getElementById('publicShare').checked = false;
+        }
+
+        function handlePreviewFiles(files) {
+            console.log('handlePreviewFiles called', files);
+            const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            const file = files[0];
+            if (!file) {
+                console.log('没有文件');
+                return;
+            }
+            console.log('文件:', file.name, file.type, file.size);
+            if (!validTypes.includes(file.type)) {
+                showToast('请上传PNG或JPG格式', 'error');
+                return;
+            }
+            if (file.size > MAX_FILE_SIZE) {
+                showToast('预览图超过500MB限制', 'error');
+                return;
+            }
+            selectedPreviewFile = file;
+            renderPreviewFileList();
+            showToast('预览图已选择：' + file.name, 'success');
+        }
+
+        function handleSourceFiles(files) {
+            const validExtensions = ['.ai', '.psd', '.eps'];
+            const file = files[0];
+            if (!file) return;
+            const ext = '.' + file.name.split('.').pop().toLowerCase();
+            if (!validExtensions.includes(ext)) {
+                showToast('请上传AI、PSD或EPS格式', 'error');
+                return;
+            }
+            if (file.size > MAX_FILE_SIZE) {
+                showToast('源文件超过500MB限制', 'error');
+                return;
+            }
+            selectedSourceFile = file;
+            renderSourceFileList();
+            showToast('源文件已选择：' + file.name, 'success');
+        }
+
+        function renderPreviewFileList() {
+            const list = document.getElementById('previewFileList');
+            if (!selectedPreviewFile) { list.innerHTML = ''; return; }
+            list.innerHTML = `
+                <div class="file-item">
+                    <div class="file-item-icon" style="background: var(--accent-png-bg); color: var(--accent-png);"><i class="fas fa-image"></i></div>
+                    <div class="file-item-info">
+                        <div class="file-item-name">${selectedPreviewFile.name}</div>
+                        <div class="file-item-size">${formatFileSize(selectedPreviewFile.size)}</div>
+                    </div>
+                    <button class="file-item-remove" onclick="clearPreviewFile()"><i class="fas fa-times"></i></button>
+                </div>`;
+        }
+
+        function renderSourceFileList() {
+            const list = document.getElementById('sourceFileList');
+            if (!selectedSourceFile) { list.innerHTML = ''; return; }
+            const type = getFileType(selectedSourceFile.name);
+            list.innerHTML = `
+                <div class="file-item">
+                    <div class="file-item-icon" style="background: var(--accent-${type}-bg); color: var(--accent-${type});"><i class="fas fa-${getFileIcon(type)}"></i></div>
+                    <div class="file-item-info">
+                        <div class="file-item-name">${selectedSourceFile.name}</div>
+                        <div class="file-item-size">${formatFileSize(selectedSourceFile.size)}</div>
+                    </div>
+                    <button class="file-item-remove" onclick="clearSourceFile()"><i class="fas fa-times"></i></button>
+                </div>`;
+        }
+
+        function clearPreviewFile() { selectedPreviewFile = null; document.getElementById('previewInput').value = ''; renderPreviewFileList(); }
+        function clearSourceFile() { selectedSourceFile = null; document.getElementById('sourceInput').value = ''; renderSourceFileList(); }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        
+        // 详情相关 (Firebase)
+        async function openDetail(id) {
+            let assets;
+            try {
+                if (currentPage === 'my') assets = await getMyAssets();
+                else if (currentPage === 'favorite') assets = await getFavoriteAssets();
+                else assets = await getPublicAssets();
+            } catch (err) { assets = []; }
+
+            let asset = assets.find(a => a.id === id);
+            if (!asset) return;
+
+            currentDetailId = id;
+            currentDetailAsset = asset;
+
+            const preview = document.getElementById('detailPreview');
+            preview.innerHTML = asset.thumbnailUrl
+                ? `<img src="${asset.thumbnailUrl}" alt="${asset.name}"><span class="zoom-hint"><i class="fas fa-search-plus"></i> 点击放大</span>`
+                : `<i class="fas fa-file-image file-icon"></i>`;
+
+            document.getElementById('detailName').textContent = asset.name;
+            document.getElementById('detailCategory').textContent = CATEGORY_NAMES[asset.category] || '单张设计';
+            document.getElementById('detailSourceType').textContent = ('.' + (asset.sourceType || '')).toUpperCase();
+            document.getElementById('detailSize').textContent = formatFileSize(asset.sourceSize || 0);
+            document.getElementById('detailOwner').textContent = asset.ownerName || '未知';
+            document.getElementById('detailDate').textContent = formatDate(asset.date);
+            document.getElementById('detailDescription').textContent = asset.description || '无描述';
+
+            const canManage = currentUser && currentUser.uid === asset.ownerId;
+            document.getElementById('deleteAssetBtn').style.display = canManage ? 'block' : 'none';
+            document.getElementById('editAssetBtn').style.display = canManage ? 'inline-flex' : 'none';
+
+            cancelAssetEdit();
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            currentDetailId = null;
+            currentDetailAsset = null;
+            cancelAssetEdit();
+        }
+
+        // 编辑素材
+        function toggleAssetEdit() {
+            if (!currentDetailAsset) return;
+            const isEditing = !document.getElementById('detailNameEdit').classList.contains('hidden');
+
+            if (isEditing) {
+                cancelAssetEdit();
+            } else {
+                document.getElementById('detailNameView').classList.add('hidden');
+                document.getElementById('detailCategoryView').classList.add('hidden');
+                document.getElementById('detailDescView').classList.add('hidden');
+                document.getElementById('detailActionsView').classList.add('hidden');
+
+                document.getElementById('detailNameEdit').classList.remove('hidden');
+                document.getElementById('detailCategoryEdit').classList.remove('hidden');
+                document.getElementById('detailDescEdit').classList.remove('hidden');
+                document.getElementById('detailActionsEdit').classList.remove('hidden');
+
+                document.getElementById('editAssetName').value = currentDetailAsset.name;
+                document.getElementById('editAssetCategory').value = currentDetailAsset.category || 'single';
+                document.getElementById('editAssetDescription').value = currentDetailAsset.description || '';
+            }
+        }
+
+        function cancelAssetEdit() {
+            document.getElementById('detailNameView').classList.remove('hidden');
+            document.getElementById('detailCategoryView').classList.remove('hidden');
+            document.getElementById('detailDescView').classList.remove('hidden');
+            document.getElementById('detailActionsView').classList.remove('hidden');
+
+            document.getElementById('detailNameEdit').classList.add('hidden');
+            document.getElementById('detailCategoryEdit').classList.add('hidden');
+            document.getElementById('detailDescEdit').classList.add('hidden');
+            document.getElementById('detailActionsEdit').classList.add('hidden');
+        }
+
+        async function saveAssetEdit() {
+            if (!currentDetailId || !currentDetailAsset) return;
+            const newName = document.getElementById('editAssetName').value.trim();
+            const newCategory = document.getElementById('editAssetCategory').value;
+            const newDescription = document.getElementById('editAssetDescription').value.trim();
+            if (!newName) { showToast('素材名称不能为空', 'error'); return; }
+
+            try {
+                await assetsRef.doc(currentDetailId).update({
+                    name: newName, category: newCategory, description: newDescription
+                });
+                currentDetailAsset.name = newName;
+                currentDetailAsset.category = newCategory;
+                currentDetailAsset.description = newDescription;
+
+                document.getElementById('detailName').textContent = newName;
+                document.getElementById('detailCategory').textContent = CATEGORY_NAMES[newCategory] || '单张设计';
+                document.getElementById('detailDescription').textContent = newDescription || '无描述';
+
+                cancelAssetEdit();
+                await renderAssets();
+                showToast('修改已保存', 'success');
+            } catch (err) { showToast('保存失败', 'error'); }
+        }
+
+        function quickDelete(id) { currentDetailId = id; document.getElementById('confirmModal').classList.add('active'); }
+        function showDeleteConfirm() { document.getElementById('confirmModal').classList.add('active'); }
+        function closeDeleteConfirm() { document.getElementById('confirmModal').classList.remove('active'); }
+
+        // ========== 图片放大查看 (Lightbox) ==========
+        let lbZoom = 1;
+        let lbPosition = { x: 0, y: 0 };
+        let lbDragging = false;
+        let lbDragStart = { x: 0, y: 0 };
+        let currentLightboxSrc = '';
+
+        function openLightbox(src) {
+            currentLightboxSrc = src;
+            lbZoom = 1;
+            lbPosition = { x: 0, y: 0 };
+            const img = document.getElementById('lbImage');
+            img.src = src;
+            img.style.transform = 'translate(0px, 0px) scale(1)';
+            document.getElementById('lbZoomLevel').textContent = '100%';
+            document.getElementById('lbHint').style.display = 'none';
+            document.getElementById('lightboxOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function lbClose() {
+            document.getElementById('lightboxOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function lbZoomIn() {
+            lbZoom = Math.min(lbZoom + 0.25, 5);
+            updateLbTransform();
+        }
+
+        function lbZoomOut() {
+            lbZoom = Math.max(lbZoom - 0.25, 0.25);
+            if (lbZoom <= 1) lbPosition = { x: 0, y: 0 };
+            updateLbTransform();
+        }
+
+        function lbReset() {
+            lbZoom = 1;
+            lbPosition = { x: 0, y: 0 };
+            updateLbTransform();
+        }
+
+        function updateLbTransform() {
+            const img = document.getElementById('lbImage');
+            img.style.transform = `translate(${lbPosition.x}px, ${lbPosition.y}px) scale(${lbZoom})`;
+            document.getElementById('lbZoomLevel').textContent = Math.round(lbZoom * 100) + '%';
+            document.getElementById('lbHint').style.display = lbZoom > 1 ? 'block' : 'none';
+        }
+
+        // Lightbox 拖拽平移
+        const lbWrapper = document.getElementById('lbImageWrapper');
+        lbWrapper.addEventListener('mousedown', (e) => {
+            if (lbZoom <= 1) return;
+            lbDragging = true;
+            lbDragStart = { x: e.clientX - lbPosition.x, y: e.clientY - lbPosition.y };
+            lbWrapper.classList.add('dragging');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!lbDragging) return;
+            lbPosition = { x: e.clientX - lbDragStart.x, y: e.clientY - lbDragStart.y };
+            const img = document.getElementById('lbImage');
+            img.style.transition = 'none';
+            img.style.transform = `translate(${lbPosition.x}px, ${lbPosition.y}px) scale(${lbZoom})`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            lbDragging = false;
+            lbWrapper.classList.remove('dragging');
+            const img = document.getElementById('lbImage');
+            img.style.transition = 'transform 0.2s ease';
+        });
+
+        // Lightbox 滚轮缩放
+        lbWrapper.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            lbZoom = Math.max(0.25, Math.min(5, lbZoom + delta));
+            if (lbZoom <= 1) lbPosition = { x: 0, y: 0 };
+            updateLbTransform();
+        });
+
+        // ESC 关闭 Lightbox
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') lbClose();
+        });
+
+        // 点击背景关闭
+        document.getElementById('lightboxOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) lbClose();
+        });
+
+        // ========== 工具函数 ==========
+
+        // 构建月份下拉选项
+        function buildMonthOptions(assets) {
+            const select = document.getElementById('monthSelect');
+            if (!select) return;
+
+            // 从素材中提取所有年月，按最新排序
+            const months = [...new Set(assets.map(a => a.date ? a.date.substring(0, 7) : ''))].filter(Boolean);
+            months.sort().reverse();
+
+            const monthNames = {
+                '01': '1月', '02': '2月', '03': '3月', '04': '4月',
+                '05': '5月', '06': '6月', '07': '7月', '08': '8月',
+                '09': '9月', '10': '10月', '11': '11月', '12': '12月'
+            };
+
+            const savedValue = select.value;
+            select.innerHTML = '<option value="all">全部时间</option>';
+            months.forEach(m => {
+                const [year, month] = m.split('-');
+                const label = year + '年' + (monthNames[month] || month);
+                select.innerHTML += `<option value="${m}">${label}</option>`;
+            });
+
+            // 恢复之前选中值
+            if (savedValue !== 'all') {
+                const opt = select.querySelector(`option[value="${savedValue}"]`);
+                if (opt) select.value = savedValue;
+            }
+        }
+
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const typeMap = { 'ai': 'ai', 'psd': 'psd', 'eps': 'eps', 'png': 'png', 'jpg': 'jpg', 'jpeg': 'jpg' };
+            return typeMap[ext] || 'other';
+        }
+
+        function getFileIcon(type) {
+            const icons = { 'ai': 'file-image', 'psd': 'paint-brush', 'eps': 'shapes', 'png': 'image', 'jpg': 'image', 'other': 'file' };
+            return icons[type] || 'file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024, sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            if (diff < 60000) return '刚刚';
+            if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+            if (diff < 604800000) return Math.floor(diff / 86400000) + '天前';
+            return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+    </script>
+</body>
+</html>
