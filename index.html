@@ -1981,27 +1981,28 @@
             try {
                 const assetId = assetsRef.doc().id;
                 const sourceType = getFileType(selectedSourceFile.name);
-                const thumbExt = selectedPreviewFile.name.split('.').pop().toLowerCase();
-                const sourceExt = selectedSourceFile.name.split('.').pop().toLowerCase();
 
-                // 1. 上传预览图到 Storage
-                const thumbRef = storage.ref(`thumbnails/${currentUser.uid}/${assetId}.${thumbExt}`);
-                await thumbRef.put(selectedPreviewFile);
-                const thumbnailUrl = await thumbRef.getDownloadURL();
+                // 检查文件大小（Firestore 单文档限制 ~1MB）
+                if (selectedSourceFile.size > 900 * 1024) {
+                    showToast('源文件超过 900KB，请压缩后重试', 'error');
+                    return;
+                }
 
-                // 2. 上传源文件到 Storage
-                const sourceRef = storage.ref(`sources/${currentUser.uid}/${assetId}.${sourceExt}`);
-                await sourceRef.put(selectedSourceFile);
-                const sourceUrl = await sourceRef.getDownloadURL();
+                // 1. 预览图转 base64 存到 Firestore
+                const thumbnailBase64 = await readFileAsDataURL(selectedPreviewFile);
 
-                // 3. 保存元数据到 Firestore
+                // 2. 源文件转 base64 存到 Firestore
+                const sourceBase64 = await readFileAsDataURL(selectedSourceFile);
+
+                // 3. 保存到 Firestore
                 await assetsRef.doc(assetId).set({
                     name, category, sourceType,
                     previewType: getFileType(selectedPreviewFile.name),
                     sourceSize: selectedSourceFile.size,
                     previewSize: selectedPreviewFile.size,
                     date: new Date().toISOString(),
-                    description, thumbnailUrl, sourceUrl,
+                    description, thumbnailUrl: thumbnailBase64, sourceUrl: sourceBase64,
+                    sourceFileName: selectedSourceFile.name,
                     ownerId: currentUser.uid,
                     ownerName: currentUser.username,
                     isPublic
@@ -2023,11 +2024,11 @@
             }
             const link = document.createElement('a');
             link.href = currentDetailAsset.sourceUrl;
-            link.download = currentDetailAsset.name + '.' + currentDetailAsset.sourceType;
-            link.target = '_blank';
+            link.download = (currentDetailAsset.sourceFileName) || (currentDetailAsset.name + '.' + currentDetailAsset.sourceType);
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
             showToast('正在下载 ' + currentDetailAsset.name, 'success');
-            closeDetailModal();
         }
 
         async function quickDownload(id) {
@@ -2037,25 +2038,16 @@
             if (!asset || !asset.sourceUrl) { showToast('源文件不存在', 'error'); return; }
             const link = document.createElement('a');
             link.href = asset.sourceUrl;
-            link.download = asset.name + '.' + asset.sourceType;
-            link.target = '_blank';
+            link.download = (asset.sourceFileName) || (asset.name + '.' + asset.sourceType);
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
             showToast('正在下载 ' + asset.name, 'success');
         }
 
         async function confirmDelete() {
             if (!currentDetailId) return;
             try {
-                const asset = (await assetsRef.doc(currentDetailId).get()).data();
-                if (asset) {
-                    // 删除 Storage 中的文件
-                    if (asset.thumbnailUrl) {
-                        try { await storage.refFromURL(asset.thumbnailUrl).delete(); } catch (e) {}
-                    }
-                    if (asset.sourceUrl) {
-                        try { await storage.refFromURL(asset.sourceUrl).delete(); } catch (e) {}
-                    }
-                }
                 // 删除 Firestore 文档
                 await assetsRef.doc(currentDetailId).delete();
 
@@ -2129,26 +2121,26 @@
             return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         }
 
-        async function addBanner(image, title, subtitle) {
+        async function addBanner(imageFile, title, subtitle) {
             const banners = await getBannerList();
             const bannerId = bannersRef.doc().id;
             const order = banners.length;
 
-            // 上传图片到 Storage
-            const ext = image.name.split('.').pop().toLowerCase();
-            const thumbRef = storage.ref(`banners/${bannerId}.${ext}`);
-            await thumbRef.put(image);
-            const imageUrl = await thumbRef.getDownloadURL();
+            // 图片转 base64 存到 Firestore
+            const imageBase64 = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(imageFile);
+            });
 
-            await bannersRef.doc(bannerId).set({ image: imageUrl, title, subtitle, order, createdAt: new Date().toISOString() });
+            await bannersRef.doc(bannerId).set({
+                image: imageBase64, title, subtitle, order, createdAt: new Date().toISOString()
+            });
             return bannerId;
         }
 
         async function deleteBannerFromFirestore(bannerId) {
-            const banner = (await bannersRef.doc(bannerId).get()).data();
-            if (banner && banner.image) {
-                try { await storage.refFromURL(banner.image).delete(); } catch (e) {}
-            }
             await bannersRef.doc(bannerId).delete();
         }
 
