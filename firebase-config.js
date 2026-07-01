@@ -22,3 +22,9 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
+
+// Firestore 设置 — 提高可靠性
+db.settings({
+  ignoreUndefinedProperties: true,  // 忽略 undefined 字段，避免写入失败
+  cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED  // 离线缓存支持
+});

@@ -1976,25 +1976,40 @@
 
             if (!name) { showToast('请输入素材名称', 'error'); return; }
 
+            // 检查源文件大小（Firestore 单文档限制 1MB, base64 会增大约 33%）
+            if (selectedSourceFile.size > 500 * 1024) {
+                showToast('源文件超过 500KB（云端限制），请压缩后重试', 'error');
+                return;
+            }
+
             showToast('正在上传文件...', 'success');
+            console.log('[上传] 开始上传:', name, '源文件:', selectedSourceFile.size, 'bytes 预览:', selectedPreviewFile.size, 'bytes');
 
             try {
                 const assetId = assetsRef.doc().id;
                 const sourceType = getFileType(selectedSourceFile.name);
 
-                // 检查文件大小（Firestore 单文档限制 ~1MB, base64 会增大 33%）
-                if (selectedSourceFile.size > 600 * 1024) {
-                    showToast('源文件超过 600KB，请压缩后重试', 'error');
+                // 1. 预览图转 base64
+                console.log('[上传] 读取预览图...');
+                const thumbnailBase64 = await readFileAsDataURL(selectedPreviewFile);
+                console.log('[上传] 预览图 base64 长度:', thumbnailBase64.length);
+
+                // 2. 源文件转 base64
+                console.log('[上传] 读取源文件...');
+                const sourceBase64 = await readFileAsDataURL(selectedSourceFile);
+                console.log('[上传] 源文件 base64 长度:', sourceBase64.length);
+
+                // 3. 检查组合大小（Firestore 文档限制 ~1MB）
+                const estimatedSize = thumbnailBase64.length + sourceBase64.length + 500;
+                console.log('[上传] 估算文档大小:', estimatedSize, 'bytes (限制 ~1,048,576 bytes)');
+                if (estimatedSize > 950000) {
+                    showToast('文件总大小超过云端限制（~1MB），请压缩预览图和源文件后重试', 'error');
+                    console.error('[上传] 文档过大:', estimatedSize);
                     return;
                 }
 
-                // 1. 预览图转 base64 存到 Firestore
-                const thumbnailBase64 = await readFileAsDataURL(selectedPreviewFile);
-
-                // 2. 源文件转 base64 存到 Firestore
-                const sourceBase64 = await readFileAsDataURL(selectedSourceFile);
-
-                // 3. 保存到 Firestore
+                // 4. 保存到 Firestore
+                console.log('[上传] 写入 Firestore...');
                 await assetsRef.doc(assetId).set({
                     name, category, sourceType,
                     previewType: getFileType(selectedPreviewFile.name),
@@ -2007,14 +2022,21 @@
                     ownerName: currentUser.username,
                     isPublic
                 });
+                console.log('[上传] Firestore 写入成功');
 
                 await renderAssets();
                 await updateStats();
                 showToast('上传成功！', 'success');
                 closeUploadModal();
             } catch (err) {
-                console.error('上传失败:', err);
-                showToast('上传失败: ' + err.message, 'error');
+                console.error('[上传] 失败:', err);
+                let errMsg = err.message || String(err);
+                if (err.code === 'permission-denied' || errMsg.includes('PERMISSION_DENIED')) {
+                    errMsg = '权限不足，请检查 Firestore 安全规则';
+                } else if (errMsg.includes('exceeds maximum')) {
+                    errMsg = '文件过大，超过云端 1MB 限制';
+                }
+                showToast('上传失败: ' + errMsg, 'error');
             }
         }
 
@@ -3074,6 +3096,10 @@
             }
             if (file.size > MAX_FILE_SIZE) {
                 showToast('预览图超过500MB限制', 'error');
+                return;
+            }
+            if (file.size > 200 * 1024) {
+                showToast('预览图超过200KB限制（云端存储限制），请压缩后重试', 'error');
                 return;
             }
             selectedPreviewFile = file;
