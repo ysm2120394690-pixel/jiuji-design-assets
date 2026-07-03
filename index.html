@@ -1294,8 +1294,8 @@
 
             <div id="accountLoginForm">
                 <div class="form-group">
-                    <label>邮箱</label>
-                    <input type="email" id="loginUsername" placeholder="请输入邮箱">
+                    <label>手机号</label>
+                    <input type="text" id="loginUsername" placeholder="请输入手机号">
                 </div>
                 <div class="form-group">
                     <label>密码</label>
@@ -1328,16 +1328,16 @@
 
             <div id="registerForm">
                 <div class="form-group">
-                    <label>用户名</label>
-                    <input type="text" id="regUsername" placeholder="请输入用户名">
-                </div>
-                <div class="form-group">
-                    <label>邮箱</label>
-                    <input type="email" id="regEmail" placeholder="请输入邮箱">
+                    <label>手机号</label>
+                    <input type="text" id="regUsername" placeholder="请输入手机号">
                 </div>
                 <div class="form-group">
                     <label>密码</label>
                     <input type="password" id="regPassword" placeholder="请输入密码（至少6位）">
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" id="regConfirmPassword" placeholder="请再次输入密码">
                 </div>
 
                 <button class="btn btn-primary" style="width: 100%;" onclick="register()">
@@ -1576,7 +1576,7 @@
             </button>
             <h2><i class="fas fa-info-circle" style="color: var(--accent-psd);"></i> 素材详情</h2>
 
-            <div class="detail-preview" id="detailPreview" onclick="openLightbox(currentDetailAsset?.thumbnail)" style="cursor:zoom-in;">
+            <div class="detail-preview" id="detailPreview" onclick="openLightbox(currentDetailAsset?.thumbnailUrl)" style="cursor:zoom-in;">
                 <i class="fas fa-file-image file-icon"></i>
                 <span class="zoom-hint"><i class="fas fa-search-plus"></i> 点击放大</span>
             </div>
@@ -1663,16 +1663,12 @@
             </button>
             <h2><i class="fas fa-key" style="color: var(--accent-psd);"></i> 找回密码</h2>
 
-            <div class="form-group">
-                <label>邮箱</label>
-                <input type="email" id="forgotPhone" placeholder="请输入注册时的邮箱">
-            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; text-align: center;">
+                忘记密码请联系管理员，手动重置密码。
+            </p>
 
             <div class="form-actions">
-                <button class="btn btn-outline" onclick="closeForgotModal()">取消</button>
-                <button class="btn btn-primary" onclick="resetPassword()">
-                    <i class="fas fa-paper-plane"></i> 发送重置邮件
-                </button>
+                <button class="btn btn-outline" onclick="closeForgotModal()">关闭</button>
             </div>
         </div>
     </div>
@@ -1876,84 +1872,115 @@
         <div class="lightbox-hint" id="lbHint">按住鼠标拖动平移图片</div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-    <script src="firebase-config.js"></script>
+    <!-- CloudBase (腾讯云开发) SDK -->
+    <script src="https://web.sdk.qcloud.com/cloudbase-js-sdk/2.7.12/cloudbase.full.js"></script>
+    <script src="cloudbase-config.js"></script>
 
     <script>
-        // ========== Firebase 数据操作 ==========
+        // ========== CloudBase 数据操作 ==========
 
-        // Firestore 引用
-        const assetsRef = db.collection('assets');
-        const usersRef = db.collection('users');
-        const bannersRef = db.collection('banners');
 
         // 获取当前用户资料
         async function loadUserProfile(uid) {
-            const doc = await usersRef.doc(uid).get();
-            if (doc.exists) {
-                return { uid, ...doc.data() };
-            } else {
-                // 如果没有资料，创建一个默认的
-                const user = auth.currentUser;
-                const profile = {
-                    username: user.email ? user.email.split('@')[0] : '用户',
-                    email: user.email || '',
-                    points: 100,
-                    bio: '',
-                    avatarUrl: '',
-                    createdAt: new Date().toISOString()
-                };
-                await usersRef.doc(uid).set(profile);
-                return { uid, ...profile };
+            try {
+                const result = await db.collection('users').where({ uid: uid }).get();
+                if (result.data && result.data.length > 0) {
+                    return result.data[0];
+                } else {
+                    const loginState = await auth.getLoginState();
+                    const cloudUser = loginState ? loginState.user : null;
+                    const displayName = (cloudUser && cloudUser.username) ? cloudUser.username : '用户';
+                    const profile = {
+                        uid: uid,
+                        username: displayName,
+                        phone: (cloudUser && cloudUser.username) ? cloudUser.username : '',
+                        points: 100,
+                        bio: '',
+                        avatarUrl: '',
+                        createdAt: new Date().toISOString()
+                    };
+                    const addResult = await db.collection('users').add(profile);
+                    return { _id: addResult.id, ...profile };
+                }
+            } catch (err) {
+                console.error('加载用户资料失败:', err);
+                return null;
             }
         }
 
         // 保存用户资料
         async function saveUserProfile(profile) {
-            await usersRef.doc(profile.uid).set(profile, { merge: true });
+            try {
+                const result = await db.collection('users').where({ uid: profile.uid }).get();
+                if (result.data && result.data.length > 0) {
+                    await db.collection('users').doc(result.data[0]._id).update(profile);
+                } else {
+                    await db.collection('users').add(profile);
+                }
+            } catch (err) {
+                console.error('保存用户资料失败:', err);
+            }
         }
 
-        // ========== 素材操作 (Firestore) ==========
+        // ========== 素材操作 (CloudBase) ==========
 
         async function getMyAssets() {
-            const snapshot = await assetsRef.where('ownerId', '==', currentUser.uid).get();
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            try {
+                const result = await db.collection('assets').where({ ownerId: currentUser.uid }).orderBy('date', 'desc').get();
+                return (result.data || []).map(doc => ({ id: doc._id, ...doc }));
+            } catch (err) {
+                console.error('获取我的素材失败:', err);
+                return [];
+            }
         }
 
         async function getPublicAssets() {
-            const snapshot = await assetsRef.where('isPublic', '==', true).get();
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            try {
+                const result = await db.collection('assets').where({ isPublic: true }).orderBy('date', 'desc').get();
+                return (result.data || []).map(doc => ({ id: doc._id, ...doc }));
+            } catch (err) {
+                console.error('获取公开素材失败:', err);
+                return [];
+            }
         }
 
         async function getFavoriteAssets() {
-            const favSnapshot = await db.collection('favorites').doc(currentUser.uid).collection('items').get();
-            const favIds = favSnapshot.docs.map(doc => doc.id);
-            if (favIds.length === 0) return [];
+            try {
+                const favResult = await db.collection('favorites').where({ uid: currentUser.uid }).get();
+                const favAssetIds = (favResult.data || []).map(doc => doc.assetId);
+                if (favAssetIds.length === 0) return [];
 
-            // 批量获取收藏的素材
-            const results = [];
-            for (const id of favIds) {
-                const doc = await assetsRef.doc(id).get();
-                if (doc.exists) results.push({ id: doc.id, ...doc.data() });
+                const results = [];
+                for (const assetId of favAssetIds) {
+                    try {
+                        const docResult = await db.collection('assets').doc(assetId).get();
+                        if (docResult.data && docResult.data.length > 0) {
+                            results.push({ id: assetId, ...docResult.data[0] });
+                        }
+                    } catch (e) {}
+                }
+                return results;
+            } catch (err) {
+                console.error('获取收藏素材失败:', err);
+                return [];
             }
-            return results;
         }
 
         async function toggleFavorite(assetId) {
             if (!currentUser) { showToast('请先登录', 'error'); return; }
-            const favRef = db.collection('favorites').doc(currentUser.uid).collection('items').doc(assetId);
-            const doc = await favRef.get();
-
-            if (doc.exists) {
-                await favRef.delete();
-                showToast('已取消收藏', 'success');
-            } else {
-                await favRef.set({ addedAt: new Date().toISOString() });
-                showToast('已添加到收藏', 'success');
+            try {
+                const favDocs = await db.collection('favorites').where({ uid: currentUser.uid, assetId: assetId }).get();
+                if (favDocs.data && favDocs.data.length > 0) {
+                    for (const d of favDocs.data) {
+                        await db.collection('favorites').doc(d._id).remove();
+                    }
+                    showToast('已取消收藏', 'success');
+                } else {
+                    await db.collection('favorites').add({ uid: currentUser.uid, assetId: assetId, addedAt: new Date().toISOString() });
+                    showToast('已添加到收藏', 'success');
+                }
+            } catch (err) {
+                showToast('收藏操作失败', 'error');
             }
             renderAssets();
             updateStats();
@@ -1961,8 +1988,10 @@
 
         async function isFavorite(assetId) {
             if (!currentUser) return false;
-            const doc = await db.collection('favorites').doc(currentUser.uid).collection('items').doc(assetId).get();
-            return doc.exists;
+            try {
+                const result = await db.collection('favorites').where({ uid: currentUser.uid, assetId: assetId }).get();
+                return result.data && result.data.length > 0;
+            } catch (e) { return false; }
         }
 
         async function uploadFiles() {
@@ -1976,53 +2005,51 @@
 
             if (!name) { showToast('请输入素材名称', 'error'); return; }
 
-            // 检查源文件大小（Firestore 单文档限制 1MB, base64 会增大约 33%）
-            if (selectedSourceFile.size > 500 * 1024) {
-                showToast('源文件超过 500KB（云端限制），请压缩后重试', 'error');
-                return;
-            }
-
             showToast('正在上传文件...', 'success');
             console.log('[上传] 开始上传:', name, '源文件:', selectedSourceFile.size, 'bytes 预览:', selectedPreviewFile.size, 'bytes');
 
             try {
-                const assetId = assetsRef.doc().id;
                 const sourceType = getFileType(selectedSourceFile.name);
+                const timestamp = Date.now();
+                const uid = currentUser.uid;
 
-                // 1. 预览图转 base64
-                console.log('[上传] 读取预览图...');
-                const thumbnailBase64 = await readFileAsDataURL(selectedPreviewFile);
-                console.log('[上传] 预览图 base64 长度:', thumbnailBase64.length);
+                // 1. 上传预览图到 CloudBase 云存储
+                console.log('[上传] 上传预览图到云存储...');
+                const previewExt = selectedPreviewFile.name.split('.').pop();
+                const previewPath = 'assets/' + uid + '/' + timestamp + '_preview.' + previewExt;
+                const previewUpload = await app.uploadFile({
+                    cloudPath: previewPath,
+                    filePath: selectedPreviewFile
+                });
+                console.log('[上传] 预览图 fileID:', previewUpload.fileID);
 
-                // 2. 源文件转 base64
-                console.log('[上传] 读取源文件...');
-                const sourceBase64 = await readFileAsDataURL(selectedSourceFile);
-                console.log('[上传] 源文件 base64 长度:', sourceBase64.length);
+                // 2. 上传源文件到 CloudBase 云存储
+                console.log('[上传] 上传源文件到云存储...');
+                const sourceExt = selectedSourceFile.name.split('.').pop();
+                const sourcePath = 'assets/' + uid + '/' + timestamp + '_source.' + sourceExt;
+                const sourceUpload = await app.uploadFile({
+                    cloudPath: sourcePath,
+                    filePath: selectedSourceFile
+                });
+                console.log('[上传] 源文件 fileID:', sourceUpload.fileID);
 
-                // 3. 检查组合大小（Firestore 文档限制 ~1MB）
-                const estimatedSize = thumbnailBase64.length + sourceBase64.length + 500;
-                console.log('[上传] 估算文档大小:', estimatedSize, 'bytes (限制 ~1,048,576 bytes)');
-                if (estimatedSize > 950000) {
-                    showToast('文件总大小超过云端限制（~1MB），请压缩预览图和源文件后重试', 'error');
-                    console.error('[上传] 文档过大:', estimatedSize);
-                    return;
-                }
-
-                // 4. 保存到 Firestore
-                console.log('[上传] 写入 Firestore...');
-                await assetsRef.doc(assetId).set({
+                // 3. 保存元数据到 CloudBase 数据库
+                console.log('[上传] 写入数据库...');
+                const addResult = await db.collection('assets').add({
                     name, category, sourceType,
                     previewType: getFileType(selectedPreviewFile.name),
                     sourceSize: selectedSourceFile.size,
                     previewSize: selectedPreviewFile.size,
                     date: new Date().toISOString(),
-                    description, thumbnailUrl: thumbnailBase64, sourceUrl: sourceBase64,
+                    description,
+                    thumbnailFileID: previewUpload.fileID,
+                    sourceFileID: sourceUpload.fileID,
                     sourceFileName: selectedSourceFile.name,
                     ownerId: currentUser.uid,
                     ownerName: currentUser.username,
                     isPublic
                 });
-                console.log('[上传] Firestore 写入成功');
+                console.log('[上传] 数据库写入成功, docId:', addResult.id);
 
                 await renderAssets();
                 await updateStats();
@@ -2031,58 +2058,92 @@
             } catch (err) {
                 console.error('[上传] 失败:', err);
                 let errMsg = err.message || String(err);
-                if (err.code === 'permission-denied' || errMsg.includes('PERMISSION_DENIED')) {
-                    errMsg = '权限不足，请检查 Firestore 安全规则';
-                } else if (errMsg.includes('exceeds maximum')) {
-                    errMsg = '文件过大，超过云端 1MB 限制';
+                if (err.code === 'PERMISSION_DENIED' || errMsg.includes('permission')) {
+                    errMsg = '权限不足，请检查 CloudBase 安全规则';
                 }
                 showToast('上传失败: ' + errMsg, 'error');
             }
         }
 
         async function downloadAsset() {
-            if (!currentDetailAsset || !currentDetailAsset.sourceUrl) {
+            if (!currentDetailAsset || !currentDetailAsset.sourceFileID) {
                 showToast('源文件不存在', 'error'); return;
             }
-            const link = document.createElement('a');
-            link.href = currentDetailAsset.sourceUrl;
-            link.download = (currentDetailAsset.sourceFileName) || (currentDetailAsset.name + '.' + currentDetailAsset.sourceType);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast('正在下载 ' + currentDetailAsset.name, 'success');
+            try {
+                showToast('正在获取下载链接...', 'success');
+                const urlResult = await app.getTempFileURL({ fileList: [currentDetailAsset.sourceFileID] });
+                if (urlResult.fileList && urlResult.fileList[0] && urlResult.fileList[0].tempFileURL) {
+                    const link = document.createElement('a');
+                    link.href = urlResult.fileList[0].tempFileURL;
+                    link.download = (currentDetailAsset.sourceFileName) || (currentDetailAsset.name + '.' + currentDetailAsset.sourceType);
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    showToast('正在下载 ' + currentDetailAsset.name, 'success');
+                } else {
+                    showToast('获取下载链接失败', 'error');
+                }
+            } catch (err) {
+                console.error('下载失败:', err);
+                showToast('下载失败', 'error');
+            }
         }
 
         async function quickDownload(id) {
             const assets = currentPage === 'my' ? await getMyAssets() :
                            (currentPage === 'favorite' ? await getFavoriteAssets() : await getPublicAssets());
             const asset = assets.find(a => a.id === id);
-            if (!asset || !asset.sourceUrl) { showToast('源文件不存在', 'error'); return; }
-            const link = document.createElement('a');
-            link.href = asset.sourceUrl;
-            link.download = (asset.sourceFileName) || (asset.name + '.' + asset.sourceType);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast('正在下载 ' + asset.name, 'success');
+            if (!asset || !asset.sourceFileID) { showToast('源文件不存在', 'error'); return; }
+            try {
+                showToast('正在获取下载链接...', 'success');
+                const urlResult = await app.getTempFileURL({ fileList: [asset.sourceFileID] });
+                if (urlResult.fileList && urlResult.fileList[0] && urlResult.fileList[0].tempFileURL) {
+                    const link = document.createElement('a');
+                    link.href = urlResult.fileList[0].tempFileURL;
+                    link.download = (asset.sourceFileName) || (asset.name + '.' + asset.sourceType);
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    showToast('正在下载 ' + asset.name, 'success');
+                } else {
+                    showToast('获取下载链接失败', 'error');
+                }
+            } catch (err) {
+                console.error('下载失败:', err);
+                showToast('下载失败', 'error');
+            }
         }
 
         async function confirmDelete() {
             if (!currentDetailId) return;
             try {
-                // 删除 Firestore 文档
-                await assetsRef.doc(currentDetailId).delete();
+                // 获取素材信息（用于删除云存储中的文件）
+                const docResult = await db.collection('assets').doc(currentDetailId).get();
+                if (docResult.data && docResult.data.length > 0) {
+                    const assetData = docResult.data[0];
+                    const deleteFiles = [];
+                    if (assetData.thumbnailFileID) deleteFiles.push(assetData.thumbnailFileID);
+                    if (assetData.sourceFileID) deleteFiles.push(assetData.sourceFileID);
+                    if (deleteFiles.length > 0) {
+                        try { await app.deleteFile({ fileList: deleteFiles }); } catch (e) {}
+                    }
+                }
+
+                // 删除数据库文档
+                await db.collection('assets').doc(currentDetailId).remove();
 
                 // 从收藏中删除
-                const favRef = db.collection('favorites').doc(currentUser.uid).collection('items').doc(currentDetailId);
-                await favRef.delete();
+                const favDocs = await db.collection('favorites').where({ uid: currentUser.uid, assetId: currentDetailId }).get();
+                if (favDocs.data) { for (const d of favDocs.data) { await db.collection('favorites').doc(d._id).remove(); } }
 
                 await renderAssets();
                 await updateStats();
                 closeDeleteConfirm();
                 closeDetailModal();
                 showToast('素材已删除', 'success');
-            } catch (err) { showToast('删除失败', 'error'); }
+            } catch (err) { console.error(err); showToast('删除失败', 'error'); }
             currentDetailId = null;
         }
 
@@ -2094,7 +2155,7 @@
             if (!newName) { showToast('素材名称不能为空', 'error'); return; }
 
             try {
-                await assetsRef.doc(currentDetailId).update({
+                await db.collection('assets').doc(currentDetailId).update({
                     name: newName, category: newCategory, description: newDescription
                 });
                 currentDetailAsset.name = newName;
@@ -2116,7 +2177,7 @@
             const asset = myAssets.find(a => a.id === assetId);
             if (!asset) return;
             const newPublic = !asset.isPublic;
-            await assetsRef.doc(assetId).update({ isPublic: newPublic });
+            await db.collection('assets').doc(assetId).update({ isPublic: newPublic });
             showToast(newPublic ? '已展示到素材广场' : '已取消展示', 'success');
             renderAssets();
             updateStats();
@@ -2136,37 +2197,45 @@
             } catch (e) {}
         }
 
-        // ========== Banner 操作 (Firestore) ==========
+        // ========== Banner 操作 (CloudBase) ==========
 
         async function getBannerList() {
-            const snapshot = await bannersRef.orderBy('order').get();
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            try {
+                const result = await db.collection('banners').orderBy('order', 'asc').get();
+                return (result.data || []).map(doc => ({ id: doc._id, ...doc }));
+            } catch (e) { return []; }
         }
 
         async function addBanner(imageFile, title, subtitle) {
             const banners = await getBannerList();
-            const bannerId = bannersRef.doc().id;
             const order = banners.length;
-
-            // 图片转 base64 存到 Firestore
-            const imageBase64 = await new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = e => resolve(e.target.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(imageFile);
+            // 上传 Banner 图片到云存储
+            const timestamp = Date.now();
+            const ext = imageFile.name.split('.').pop();
+            const cloudPath = 'banners/' + timestamp + '.' + ext;
+            const uploadResult = await app.uploadFile({
+                cloudPath: cloudPath,
+                filePath: imageFile
             });
-
-            await bannersRef.doc(bannerId).set({
-                image: imageBase64, title, subtitle, order, createdAt: new Date().toISOString()
+            const addResult = await db.collection('banners').add({
+                imageFileID: uploadResult.fileID, title, subtitle, order,
+                createdAt: new Date().toISOString()
             });
-            return bannerId;
+            return addResult.id;
         }
 
-        async function deleteBannerFromFirestore(bannerId) {
-            await bannersRef.doc(bannerId).delete();
+        async function deleteBannerFromCloudBase 数据库(bannerId) {
+            // 尝试删除云存储中的图片
+            try {
+                const docResult = await db.collection('banners').doc(bannerId).get();
+                if (docResult.data && docResult.data.length > 0 && docResult.data[0].imageFileID) {
+                    await app.deleteFile({ fileList: [docResult.data[0].imageFileID] });
+                }
+            } catch (e) {}
+            await db.collection('banners').doc(bannerId).remove();
         }
 
-        async function moveBannerInFirestore(bannerId, dir) {
+        async function moveBannerInCloudBase 数据库(bannerId, dir) {
             const banners = await getBannerList();
             const idx = banners.findIndex(b => b.id === bannerId);
             if (idx === -1) return;
@@ -2175,8 +2244,8 @@
             if (targetIdx < 0 || targetIdx >= banners.length) return;
 
             // 交换 order 字段
-            await bannersRef.doc(banners[idx].id).update({ order: targetIdx });
-            await bannersRef.doc(banners[targetIdx].id).update({ order: idx });
+            await db.collection('banners').doc(banners[idx].id).update({ order: targetIdx });
+            await db.collection('banners').doc(banners[targetIdx].id).update({ order: idx });
         }
 
         // ========== 配置
@@ -2347,91 +2416,87 @@
             document.getElementById('loginPage').classList.remove('hidden');
         }
 
-        // ========== Firebase 登录注册 ==========
+        // ========== CloudBase 登录注册 ==========
 
         async function accountLogin() {
-            const email = document.getElementById('loginUsername').value.trim();
+            const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            if (!email || !password) {
-                showToast('请输入邮箱和密码', 'error');
-                return;
-            }
-
-            if (!email.includes('@')) {
-                showToast('请输入有效的邮箱地址', 'error');
+            if (!username || !password) {
+                showToast('请输入手机号和密码', 'error');
                 return;
             }
 
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                await auth.signIn({ username, password });
                 showToast('登录成功！', 'success');
             } catch (err) {
-                if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-                    showToast('邮箱或密码错误', 'error');
+                console.error('登录失败:', err);
+                const msg = (err.message || '').toLowerCase();
+                if (msg.includes('用户不存在') || msg.includes('not found')) {
+                    showToast('手机号未注册', 'error');
+                } else if (msg.includes('密码')) {
+                    showToast('密码错误', 'error');
                 } else {
-                    showToast('登录失败: ' + err.message, 'error');
+                    showToast('登录失败: ' + (err.message || '未知错误'), 'error');
                 }
             }
         }
 
         async function register() {
             const username = document.getElementById('regUsername').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-            if (!username || !email || !password) {
-                showToast('请填写所有信息', 'error');
+            if (!username || !password) {
+                showToast('请填写手机号和密码', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast('密码至少6位', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showToast('两次密码不一致', 'error');
                 return;
             }
 
             try {
-                const credential = await auth.createUserWithEmailAndPassword(email, password);
-                // 保存用户资料到 Firestore
-                await usersRef.doc(credential.user.uid).set({
-                    username, email, points: 100, bio: '',
-                    createdAt: new Date().toISOString()
-                });
+                // CloudBase 用户名密码注册
+                await auth.signUp({ username, password });
+                // 注册成功后获取 uid 并保存用户资料
+                const loginState = await auth.getLoginState();
+                if (loginState && loginState.user) {
+                    await db.collection('users').add({
+                        uid: loginState.user.uid,
+                        username: username,
+                        phone: username,
+                        points: 100, bio: '',
+                        createdAt: new Date().toISOString()
+                    });
+                }
                 showToast('注册成功！', 'success');
             } catch (err) {
-                if (err.code === 'auth/email-already-in-use') {
-                    showToast('该邮箱已被注册', 'error');
-                } else if (err.code === 'auth/weak-password') {
-                    showToast('密码强度太弱，至少6位', 'error');
+                console.error('注册失败:', err);
+                const msg = (err.message || '').toLowerCase();
+                if (msg.includes('已存在') || msg.includes('exist')) {
+                    showToast('该手机号已被注册', 'error');
                 } else {
-                    showToast('注册失败: ' + err.message, 'error');
+                    showToast('注册失败: ' + (err.message || '未知错误'), 'error');
                 }
             }
         }
 
-        // 找回密码（Firebase 密码重置邮件）
-        function showForgotPassword() { document.getElementById('forgotModal').classList.add('active'); }
+        // 找回密码（用户名密码登录需要联系管理员重置）
+        function showForgotPassword() { showToast('请联系管理员重置密码', 'success'); }
         function closeForgotModal() { document.getElementById('forgotModal').classList.remove('active'); }
 
         async function resetPassword() {
-            const email = document.getElementById('forgotPhone').value.trim();
-
-            if (!email) {
-                showToast('请输入邮箱', 'error');
-                return;
-            }
-
-            if (!email.includes('@')) {
-                showToast('请输入有效的邮箱地址', 'error');
-                return;
-            }
-
-            try {
-                await auth.sendPasswordResetEmail(email);
-                showToast('密码重置邮件已发送，请查收', 'success');
-                closeForgotModal();
-            } catch (err) {
-                if (err.code === 'auth/user-not-found') {
-                    showToast('该邮箱未注册', 'error');
-                } else {
-                    showToast('操作失败: ' + err.message, 'error');
-                }
-            }
+            // 用户名密码模式下，暂时由管理员处理
+            showToast('请联系管理员重置密码', 'success');
+            closeForgotModal();
         }
 
         // 账号安全
@@ -2465,8 +2530,8 @@
             }
         }
 
-        // Firebase 监听登录状态（页面加载时自动调用）
-        auth.onAuthStateChanged(async (user) => {
+        // CloudBase 监听登录状态（页面加载时自动调用）
+        auth.onLoginStateChanged(async (user) => {
             if (user) {
                 currentUser = await loadUserProfile(user.uid);
                 showMainApp();
@@ -2523,20 +2588,34 @@
             document.getElementById('bannerNext')?.addEventListener('click', () => { stopBannerAutoPlay(); goBanner(bannerIndex + 1); });
         }
 
-        function renderBannerSlides() {
+        async function renderBannerSlides() {
             const carousel = document.getElementById('bannerCarousel');
+
+            // 批量获取 Banner 图片临时 URL
+            const bannerUrlMap = {};
+            const fileIDs = bannerList.map(b => b.imageFileID).filter(Boolean);
+            if (fileIDs.length > 0) {
+                try {
+                    const urlResult = await app.getTempFileURL({ fileList: fileIDs });
+                    (urlResult.fileList || []).forEach(item => {
+                        if (item.tempFileURL) bannerUrlMap[item.fileID] = item.tempFileURL;
+                    });
+                } catch (e) {}
+            }
 
             carousel.innerHTML = `
                 <div class="banner-track" id="bannerTrack">
-                    ${bannerList.map(b => `
+                    ${bannerList.map(b => {
+                        const imgSrc = b.imageFileID ? (bannerUrlMap[b.imageFileID] || '') : (b.image || '');
+                        return `
                         <div class="banner-slide">
-                            <img src="${b.image}" alt="${b.title}">
+                            <img src="${imgSrc}" alt="${b.title}">
                             <div class="banner-overlay">
                                 <h2>${b.title}</h2>
                                 <p>${b.subtitle}</p>
                             </div>
                         </div>
-                    `).join('')}
+                    `;}).join('')}
                 </div>
                 <div class="banner-dots" id="bannerDots">
                     ${bannerList.map((_, i) => `<div class="banner-dot ${i === 0 ? 'active' : ''}" onclick="goBanner(${i})"></div>`).join('')}
@@ -2656,7 +2735,7 @@
 
         async function deleteBannerFB(bannerId) {
             try {
-                await deleteBannerFromFirestore(bannerId);
+                await deleteBannerFromCloudBase 数据库(bannerId);
                 await renderBannerList();
                 await initBanner();
                 showToast('已删除', 'success');
@@ -2665,7 +2744,7 @@
 
         async function moveBannerFB(bannerId, dir) {
             try {
-                await moveBannerInFirestore(bannerId, dir);
+                await moveBannerInCloudBase 数据库(bannerId, dir);
                 await renderBannerList();
                 await initBanner();
             } catch (err) {}
@@ -2789,10 +2868,10 @@
         // 切换素材是否在广场展示
         async function togglePublic(assetId) {
             try {
-                const asset = (await assetsRef.doc(assetId).get()).data();
+                const asset = (await db.collection('assets').doc(assetId).get()).data();
                 if (!asset) return;
                 const newPublic = !asset.isPublic;
-                await assetsRef.doc(assetId).update({ isPublic: newPublic });
+                await db.collection('assets').doc(assetId).update({ isPublic: newPublic });
                 showToast(newPublic ? '已展示到素材广场' : '已取消展示', 'success');
                 renderAssets();
                 updateStats();
@@ -3009,18 +3088,35 @@
             const favIds = new Set();
             if (currentUser) {
                 try {
-                    const favSnapshot = await db.collection('favorites').doc(currentUser.uid).collection('items').get();
-                    favSnapshot.forEach(doc => favIds.add(doc.id));
+                    const favResult = await db.collection('favorites').where({ uid: currentUser.uid }).get();
+                    (favResult.data || []).forEach(doc => favIds.add(doc.assetId));
+                } catch (e) {}
+            }
+
+            // 批量获取缩略图临时 URL（CloudBase Storage）
+            const thumbnailMap = {};
+            const fileIDs = assets.map(a => a.thumbnailFileID).filter(Boolean);
+            if (fileIDs.length > 0) {
+                try {
+                    // 每次最多50个
+                    for (let i = 0; i < fileIDs.length; i += 50) {
+                        const batch = fileIDs.slice(i, i + 50);
+                        const urlResult = await app.getTempFileURL({ fileList: batch });
+                        (urlResult.fileList || []).forEach(item => {
+                            if (item.tempFileURL) thumbnailMap[item.fileID] = item.tempFileURL;
+                        });
+                    }
                 } catch (e) {}
             }
 
             grid.innerHTML = assets.map(asset => {
                 const isFav = favIds.has(asset.id);
                 const canManage = currentUser && currentUser.uid === asset.ownerId;
+                const thumbUrl = asset.thumbnailFileID ? (thumbnailMap[asset.thumbnailFileID] || '') : (asset.thumbnailUrl || '');
                 return `
                 <div class="asset-card" onclick="openDetail('${asset.id}')">
                     <div class="asset-preview">
-                        ${asset.thumbnailUrl ? `<img src="${asset.thumbnailUrl}" alt="${asset.name}">` : `<i class="fas fa-image file-icon"></i>`}
+                        ${thumbUrl ? `<img src="${thumbUrl}" alt="${asset.name}">` : `<i class="fas fa-image file-icon"></i>`}
                         <span class="asset-badge ${asset.sourceType}">${(asset.sourceType || '').toUpperCase()}</span>
                         <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${asset.id}')">
                             <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
@@ -3157,17 +3253,10 @@
         function clearPreviewFile() { selectedPreviewFile = null; document.getElementById('previewInput').value = ''; renderPreviewFileList(); }
         function clearSourceFile() { selectedSourceFile = null; document.getElementById('sourceInput').value = ''; renderSourceFileList(); }
 
-        function readFileAsDataURL(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(reader.error);
-                reader.readAsDataURL(file);
-            });
-        }
+        // readFileAsDataURL 已移除（CloudBase Storage 直接上传文件）
 
         
-        // 详情相关 (Firebase)
+        // 详情相关 (CloudBase)
         async function openDetail(id) {
             let assets;
             try {
@@ -3182,9 +3271,22 @@
             currentDetailId = id;
             currentDetailAsset = asset;
 
+            // 获取缩略图临时 URL
+            let thumbUrl = asset.thumbnailUrl || '';
+            if (!thumbUrl && asset.thumbnailFileID) {
+                try {
+                    const urlResult = await app.getTempFileURL({ fileList: [asset.thumbnailFileID] });
+                    if (urlResult.fileList && urlResult.fileList[0] && urlResult.fileList[0].tempFileURL) {
+                        thumbUrl = urlResult.fileList[0].tempFileURL;
+                        // 缓存到 asset 对象上
+                        currentDetailAsset.thumbnailUrl = thumbUrl;
+                    }
+                } catch (e) {}
+            }
+
             const preview = document.getElementById('detailPreview');
-            preview.innerHTML = asset.thumbnailUrl
-                ? `<img src="${asset.thumbnailUrl}" alt="${asset.name}"><span class="zoom-hint"><i class="fas fa-search-plus"></i> 点击放大</span>`
+            preview.innerHTML = thumbUrl
+                ? `<img src="${thumbUrl}" alt="${asset.name}"><span class="zoom-hint"><i class="fas fa-search-plus"></i> 点击放大</span>`
                 : `<i class="fas fa-file-image file-icon"></i>`;
 
             document.getElementById('detailName').textContent = asset.name;
@@ -3254,7 +3356,7 @@
             if (!newName) { showToast('素材名称不能为空', 'error'); return; }
 
             try {
-                await assetsRef.doc(currentDetailId).update({
+                await db.collection('assets').doc(currentDetailId).update({
                     name: newName, category: newCategory, description: newDescription
                 });
                 currentDetailAsset.name = newName;

@@ -610,17 +610,21 @@
     <!-- Toast -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- CloudBase (腾讯云开发) SDK -->
+    <script src="https://web.sdk.qcloud.com/cloudbase-js-sdk/2.7.12/cloudbase.full.js"></script>
+    <script src="cloudbase-config.js"></script>
+
     <script>
-        // Firebase Firestore & Storage
-        const bannersRef = db.collection('banners');
+        // CloudBase
+        
         let banners = [];
         let pendingFile = null;
         let pendingInfo = null;
         let editingId = null;
 
         async function loadBanners() {
-            const snapshot = await bannersRef.orderBy('order').get();
-            banners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const result = await db.collection('banners').orderBy('order', 'asc').get();
+            banners = (result.data || []).map(doc => ({ id: doc._id, ...doc }));
         }
 
         function readAsDataURL(file) {
@@ -651,6 +655,18 @@
             await loadBanners();
             document.getElementById('statCount').textContent = banners.length;
 
+            // 批量获取 Banner 图片临时 URL
+            const bannerUrlMap = {};
+            const fileIDs = banners.map(b => b.imageFileID).filter(Boolean);
+            if (fileIDs.length > 0) {
+                try {
+                    const urlResult = await app.getTempFileURL({ fileList: fileIDs });
+                    (urlResult.fileList || []).forEach(item => {
+                        if (item.tempFileURL) bannerUrlMap[item.fileID] = item.tempFileURL;
+                    });
+                } catch(e) {}
+            }
+
             const list = document.getElementById('bannerList');
             if (banners.length === 0) {
                 list.innerHTML = `
@@ -662,11 +678,13 @@
                 return;
             }
 
-            list.innerHTML = banners.map((b, i) => `
+            list.innerHTML = banners.map((b, i) => {
+                const imgSrc = b.imageFileID ? (bannerUrlMap[b.imageFileID] || '') : (b.image || '');
+                return `
                 <div class="banner-card">
                     <div class="banner-card-inner">
                         <div class="banner-thumb" onclick="showPreview('${b.id}')">
-                            <img src="${b.image}" alt="${b.title}">
+                            <img src="${imgSrc}" alt="${b.title}">
                             <span class="banner-index">第 ${i + 1} 张</span>
                             <span class="banner-size-badge">${b.width || '?'} × ${b.height || '?'} px</span>
                             <div class="banner-thumb-overlay">
@@ -708,7 +726,8 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // 上传
@@ -769,11 +788,16 @@
             if (!title) { showToast('请输入标题', 'error'); return; }
             const subtitle = document.getElementById('subtitleInput').value.trim();
             try {
-                const bannerId = bannersRef.doc().id;
-                // 图片转 base64 存 Firestore
-                const imageBase64 = await readAsDataURL(pendingFile);
-                await bannersRef.doc(bannerId).set({
-                    image: imageBase64, title, subtitle,
+                // 上传图片到 CloudBase 云存储
+                const timestamp = Date.now();
+                const ext = pendingFile.name.split('.').pop();
+                const cloudPath = 'banners/' + timestamp + '.' + ext;
+                const uploadResult = await app.uploadFile({
+                    cloudPath: cloudPath,
+                    filePath: pendingFile
+                });
+                await db.collection('banners').add({
+                    imageFileID: uploadResult.fileID, title, subtitle,
                     width: pendingInfo.width,
                     height: pendingInfo.height,
                     fileSize: pendingInfo.fileSize,
@@ -789,7 +813,14 @@
         async function deleteFB(bannerId) {
             if (!confirm('确定删除这个 Banner？')) return;
             try {
-                await bannersRef.doc(bannerId).delete();
+                // 删除云存储中的图片
+            try {
+                const docRes = await db.collection('banners').doc(bannerId).get();
+                if (docRes.data && docRes.data[0] && docRes.data[0].imageFileID) {
+                    await app.deleteFile({ fileList: [docRes.data[0].imageFileID] });
+                }
+            } catch(e) {}
+            await db.collection('banners').doc(bannerId).remove();
                 await render();
                 showToast('已删除', 'success');
             } catch (err) { showToast('删除失败', 'error'); }
@@ -799,8 +830,8 @@
             try {
                 const idx = banners.findIndex(b => b.id === bannerId);
                 if (idx === -1 || idx + dir < 0 || idx + dir >= banners.length) return;
-                await bannersRef.doc(banners[idx].id).update({ order: idx + dir });
-                await bannersRef.doc(banners[idx + dir].id).update({ order: idx });
+                await db.collection('banners').doc(banners[idx].id).update({ order: idx + dir });
+                await db.collection('banners').doc(banners[idx + dir].id).update({ order: idx });
                 await render();
             } catch (err) {}
         }
@@ -824,17 +855,27 @@
             if (!title) { showToast('标题不能为空', 'error'); return; }
             const subtitle = document.getElementById('editSubtitle').value.trim();
             try {
-                await bannersRef.doc(editingId).update({ title, subtitle });
+                await db.collection('banners').doc(editingId).update({ title, subtitle });
                 closeEditModal();
                 await render();
                 showToast('修改已保存', 'success');
             } catch (err) { showToast('保存失败', 'error'); }
         }
 
-        function showPreview(bannerId) {
+        async function showPreview(bannerId) {
             const b = banners.find(x => x.id === bannerId);
             if (!b) return;
-            document.getElementById('previewFullImg').src = b.image;
+            // 获取图片 URL（云存储 fileID 或 base64）
+            let imgSrc = b.image || '';
+            if (b.imageFileID) {
+                try {
+                    const urlResult = await app.getTempFileURL({ fileList: [b.imageFileID] });
+                    if (urlResult.fileList && urlResult.fileList[0] && urlResult.fileList[0].tempFileURL) {
+                        imgSrc = urlResult.fileList[0].tempFileURL;
+                    }
+                } catch(e) {}
+            }
+            document.getElementById('previewFullImg').src = imgSrc;
             document.getElementById('previewDim').textContent = `${b.width || '--'} × ${b.height || '--'} px`;
             document.getElementById('previewSize').textContent = formatSize(b.fileSize);
             document.getElementById('previewOverlay').classList.add('active');
