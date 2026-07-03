@@ -1871,7 +1871,7 @@
     </div>
 
     <!-- CloudBase (腾讯云开发) SDK -->
-    <script src="https://web.sdk.qcloud.com/cloudbase-js-sdk/2.7.12/cloudbase.full.js"></script>
+    <script src="https://imgcache.qq.com/qcloud/cloudbase-js-sdk/2.7.12/cloudbase.full.js"></script>
     <script src="cloudbase-config.js"></script>
 
     <script>
@@ -2031,7 +2031,7 @@
                 });
                 console.log('[上传] 源文件 fileID:', sourceUpload.fileID);
 
-                // 3. 保存元数据到 CloudBase 数据库
+                // 3. 保存元数据到 CloudBase
                 console.log('[上传] 写入数据库...');
                 const addResult = await db.collection('assets').add({
                     name, category, sourceType,
@@ -2222,7 +2222,7 @@
             return addResult.id;
         }
 
-        async function deleteBannerFromCloudBase 数据库(bannerId) {
+        async function deleteBannerFromCloudBase(bannerId) {
             // 尝试删除云存储中的图片
             try {
                 const docResult = await db.collection('banners').doc(bannerId).get();
@@ -2233,7 +2233,7 @@
             await db.collection('banners').doc(bannerId).remove();
         }
 
-        async function moveBannerInCloudBase 数据库(bannerId, dir) {
+        async function moveBannerInCloudBase(bannerId, dir) {
             const banners = await getBannerList();
             const idx = banners.findIndex(b => b.id === bannerId);
             if (idx === -1) return;
@@ -2742,7 +2742,7 @@
 
         async function deleteBannerFB(bannerId) {
             try {
-                await deleteBannerFromCloudBase 数据库(bannerId);
+                await deleteBannerFromCloudBase(bannerId);
                 await renderBannerList();
                 await initBanner();
                 showToast('已删除', 'success');
@@ -2751,7 +2751,7 @@
 
         async function moveBannerFB(bannerId, dir) {
             try {
-                await moveBannerInCloudBase 数据库(bannerId, dir);
+                await moveBannerInCloudBase(bannerId, dir);
                 await renderBannerList();
                 await initBanner();
             } catch (err) {}
